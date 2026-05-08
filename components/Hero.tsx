@@ -24,8 +24,8 @@ export default function Hero() {
             {'>'} INITIALIZING_SYSTEM_CORE...
           </p>
           <h1 className="text-4xl md:text-7xl font-black tracking-tighter leading-tight">
-            DHARMANDALA <br />
-            <span className="text-on-surface-variant">SANDHYAKALA</span>
+            MARCELLO <br />
+            <span className="text-on-surface-variant">LIENARTA</span>
           </h1>
         </div>
 
@@ -65,7 +65,7 @@ export default function Hero() {
         </div>
         <div className="font-mono text-xs md:text-sm space-y-1 opacity-70">
           <p className="text-green-500">$ whoami</p>
-          <p>dharmandala_sandhyakala</p>
+          <p>MARCELLO LIENARTA</p>
           <p className="text-green-500">$ location</p>
           <p>jakarta, id_sea</p>
           <p className="text-green-500">$ status</p>

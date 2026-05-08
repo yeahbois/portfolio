@@ -13,10 +13,10 @@ export default function Navbar() {
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
               <span className="text-2xl font-black tracking-tighter text-foreground glitch-effect">
-                DHARMakala
+                cellolienrt
               </span>
               <span className="hidden sm:inline-block text-[10px] font-mono border border-outline px-1 text-on-surface-variant">
-                v2.5.6
+                v1.0.1
               </span>
             </Link>
           </div>

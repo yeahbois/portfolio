@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dharmandala Sandhyakala | Senior Multipurpose Developer",
+  title: "Marcello Lienarta | Senior Multipurpose Developer",
   description: "Professional portfolio of a senior multipurpose developer with 5 years of experience.",
 };
 
