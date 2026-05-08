@@ -173,7 +173,7 @@ body {
   --secondary: #00ff00;
 }
 
-[data-theme='mpk'] {
+[data-theme='blue'] {
   --background: #f5f3ff;
   --foreground: #1e1b4b;
   --primary: #818cf8;
@@ -188,7 +188,7 @@ body {
   --secondary: #818cf8;
 }
 
-[data-theme='osis'] {
+[data-theme='love'] {
   --background: #fff0f5;
   --foreground: #4a0e1b;
   --primary: #ff69b4;

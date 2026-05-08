@@ -2,7 +2,7 @@
 
 import { useTheme } from './ThemeProvider'
 
-type Theme = 'light' | 'dark' | 'ultradark' | 'mpk' | 'osis'
+type Theme = 'light' | 'dark' | 'ultradark' | 'blue' | 'love'
 
 export default function Footer() {
   const { setTheme } = useTheme()
@@ -11,8 +11,8 @@ export default function Footer() {
     { name: 'light', color: '#173bab', label: 'DEFAULT' },
     { name: 'dark', color: '#5865F2', label: 'DARK' },
     { name: 'ultradark', color: '#00ff00', label: 'MATRIX' },
-    { name: 'mpk', color: '#A5B4FC', label: 'MPK' },
-    { name: 'osis', color: '#FFB6C1', label: 'OSIS' },
+    { name: 'blue', color: '#A5B4FC', label: 'BLUE' },
+    { name: 'love', color: '#FFB6C1', label: 'LOVE' },
   ]
 
   return (
@@ -46,10 +46,10 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
           <div className="flex flex-col items-center md:items-start">
             <span className="text-xl font-black tracking-tighter text-foreground">
-              DHARMakala
+              cellolienrt
             </span>
             <p className="text-[10px] font-mono mt-2 opacity-50 max-w-xs text-center md:text-left">
-              SENIOR MULTIPURPOSE DEVELOPER // 2020-2025 // BUILT WITH NEXT.JS & SUPABASE
+              SENIOR MULTIPURPOSE DEVELOPER // {new Date().getFullYear()} // BUILT WITH NEXT.JS & SUPABASE
             </p>
           </div>
 
@@ -63,7 +63,7 @@ export default function Footer() {
 
         <div className="mt-12 pt-8 border-t border-outline/10 flex flex-col items-center">
           <p className="text-[9px] font-mono opacity-30 text-center">
-            © 2026 DHARMANDALA SANDHYAKALA. ALL RIGHTS RESERVED.
+            © {new Date().getFullYear()} MARCELLO LIENARTA. ALL RIGHTS RESERVED.
             <br />
             [SYSTEM_STATUS: OPERATIONAL] [ENCRYPTION: AES-256]
           </p>
