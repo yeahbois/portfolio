@@ -27,7 +27,7 @@ export default async function Page() {
       <ul>
         {todos?.map((todo) => (
           <li key={todo.id}>
-            {todo.name ? todo.name : <span style={{color: 'red'}}>No "name" property found on this row!</span>}
+            {todo.id ? todo.timestamp : <span style={{color: 'red'}}>No "name" property found on this row!</span>}
           </li>
         ))}
       </ul>
