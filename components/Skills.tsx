@@ -1,21 +1,20 @@
-'use client'
+import { createClient } from '@/utils/supabase/server'
+import { cookies } from 'next/headers'
 
-const skillCategories = [
-  {
-    name: 'CORE_LANGUAGES',
-    skills: ['Typescript', 'Rust', 'Go', 'Python', 'C++', 'SQL']
-  },
-  {
-    name: 'FRAMEWORKS_SYSTEMS',
-    skills: ['Next.js', 'React', 'Node.js', 'Docker', 'Kubernetes', 'PostgreSQL']
-  },
-  {
-    name: 'SPECIALIZATIONS',
-    skills: ['System Architecture', 'Security Engineering', 'Cloud Infrastructure', 'UI/UX Engineering']
+export default async function Skills() {
+  const cookieStore = await cookies()
+  const supabase = createClient(cookieStore)
+
+  const { data: skillCategories, error } = await supabase
+    .from('skills')
+    .select('*')
+    .order('order_index', { ascending: true })
+
+  if (error) {
+    console.error('Error fetching skills:', error)
+    return null
   }
-]
 
-export default function Skills() {
   return (
     <section id="skills" className="py-20 px-4 max-w-7xl mx-auto w-full">
       <div className="flex items-center space-x-4 mb-12">
@@ -24,11 +23,11 @@ export default function Skills() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {skillCategories.map((cat) => (
-          <div key={cat.name} className="border-l border-primary/30 pl-6">
-            <h3 className="font-mono text-sm text-primary mb-6 tracking-[0.2em]">{cat.name}</h3>
+        {skillCategories?.map((cat) => (
+          <div key={cat.id} className="border-l border-primary/30 pl-6">
+            <h3 className="font-mono text-sm text-primary mb-6 tracking-[0.2em]">{cat.category}</h3>
             <ul className="space-y-4">
-              {cat.skills.map((skill) => (
+              {cat.items?.map((skill: string) => (
                 <li key={skill} className="flex items-center group">
                   <div className="w-1.5 h-1.5 bg-outline/40 mr-3 group-hover:bg-primary transition-colors"></div>
                   <span className="font-mono text-sm opacity-80 group-hover:opacity-100 transition-opacity">{skill}</span>
