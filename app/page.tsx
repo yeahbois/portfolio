@@ -8,10 +8,13 @@ export default async function Page() {
   const { data: todos } = await supabase.from('todos').select()
 
   return (
-    <ul>
-      {todos?.map((todo) => (
-        <li key={todo.id}>{todo.name}</li>
-      ))}
-    </ul>
+    <div>
+      <h1>Hello World!</h1>
+      <ul>
+        {todos?.map((todo) => (
+          <li key={todo.id}>{todo.name}</li>
+        ))}
+      </ul>
+    </div>
   )
 }
