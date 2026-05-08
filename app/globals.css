@@ -1,26 +1,204 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Default Techy Light Theme */
+  --background: #f0f2f5;
+  --foreground: #1a1a1a;
+  --primary: #004dcf;
+  --on-primary: #ffffff;
+  --primary-container: #e0e7ff;
+  --on-primary-container: #001a4d;
+  --surface: #ffffff;
+  --on-surface: #1a1a1a;
+  --surface-variant: #e2e8f0;
+  --on-surface-variant: #475569;
+  --outline: #94a3b8;
+  --secondary: #008037;
+
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-geist-mono);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-primary: var(--primary);
+  --color-on-primary: var(--on-primary);
+  --color-primary-container: var(--primary-container);
+  --color-on-primary-container: var(--on-primary-container);
+  --color-surface: var(--surface);
+  --color-on-surface: var(--on-surface);
+  --color-surface-variant: var(--surface-variant);
+  --color-on-surface-variant: var(--on-surface-variant);
+  --color-outline: var(--outline);
+  --color-secondary: var(--secondary);
+
+  --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Base resets with a techy feel */
+* {
+  border-radius: 0 !important;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.mono-font {
+  font-family: var(--font-mono);
+}
+
+/* Hacking / Techy Utilities */
+.glitch-effect {
+  position: relative;
+  text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75),
+    -0.025em -0.05em 0 rgba(0, 255, 0, 0.75),
+    0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
+  animation: glitch 500ms infinite;
+}
+
+@keyframes glitch {
+  0% {
+    text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75),
+      -0.05em -0.025em 0 rgba(0, 255, 0, 0.75),
+      -0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
+  }
+  14% {
+    text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75),
+      -0.05em -0.025em 0 rgba(0, 255, 0, 0.75),
+      -0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
+  }
+  15% {
+    text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75),
+      0.025em 0.025em 0 rgba(0, 255, 0, 0.75),
+      -0.05em -0.05em 0 rgba(0, 0, 255, 0.75);
+  }
+  49% {
+    text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75),
+      0.025em 0.025em 0 rgba(0, 255, 0, 0.75),
+      -0.05em -0.05em 0 rgba(0, 0, 255, 0.75);
+  }
+  50% {
+    text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75),
+      0.05em 0 0 rgba(0, 255, 0, 0.75), 0 -0.05em 0 rgba(0, 0, 255, 0.75);
+  }
+  99% {
+    text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75),
+      0.05em 0 0 rgba(0, 255, 0, 0.75), 0 -0.05em 0 rgba(0, 0, 255, 0.75);
+  }
+  100% {
+    text-shadow: -0.025em 0 0 rgba(255, 0, 0, 0.75),
+      -0.025em -0.025em 0 rgba(0, 255, 0, 0.75),
+      -0.025em -0.05em 0 rgba(0, 0, 255, 0.75);
+  }
+}
+
+.ascii-border {
+  border: 1px solid var(--outline);
+  position: relative;
+}
+
+.ascii-border::before {
+  content: "[";
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  background: var(--background);
+  padding: 0 5px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.ascii-border::after {
+  content: "]";
+  position: absolute;
+  bottom: -10px;
+  right: 10px;
+  background: var(--background);
+  padding: 0 5px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.scanline {
+  width: 100%;
+  height: 100px;
+  z-index: 10;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(0, 0, 0, 0) 100%);
+  opacity: 0.1;
+  position: fixed;
+  bottom: 100%;
+  animation: scanline 10s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes scanline {
+  0% { bottom: 100%; }
+  100% { bottom: -100px; }
+}
+
+/* Theme definitions will be injected by JS, but we can set some defaults here */
+[data-theme='dark'] {
+  --background: #1e1f22;
+  --foreground: #dbdee1;
+  --primary: #5865f2;
+  --on-primary: #ffffff;
+  --primary-container: #313338;
+  --on-primary-container: #e3e5e8;
+  --surface: #2b2d31;
+  --on-surface: #dbdee1;
+  --surface-variant: #1e1f22;
+  --on-surface-variant: #b5bac1;
+  --outline: #4f545c;
+  --secondary: #23a559;
+}
+
+[data-theme='ultradark'] {
+  --background: #000000;
+  --foreground: #00ff00; /* Matrix-like */
+  --primary: #00ff00;
+  --on-primary: #000000;
+  --primary-container: #001a00;
+  --on-primary-container: #00ff00;
+  --surface: #0a0a0a;
+  --on-surface: #00ff00;
+  --surface-variant: #141414;
+  --on-surface-variant: #00cc00;
+  --outline: #003300;
+  --secondary: #00ff00;
+}
+
+[data-theme='mpk'] {
+  --background: #f5f3ff;
+  --foreground: #1e1b4b;
+  --primary: #818cf8;
+  --on-primary: #1e1b4b;
+  --primary-container: #e0e7ff;
+  --on-primary-container: #312e81;
+  --surface: #f5f3ff;
+  --on-surface: #1e1b4b;
+  --surface-variant: #ddd6fe;
+  --on-surface-variant: #4c1d95;
+  --outline: #c4b5fd;
+  --secondary: #818cf8;
+}
+
+[data-theme='osis'] {
+  --background: #fff0f5;
+  --foreground: #4a0e1b;
+  --primary: #ff69b4;
+  --on-primary: #ffffff;
+  --primary-container: #ffe4e1;
+  --on-primary-container: #800020;
+  --surface: #fff0f5;
+  --on-surface: #4a0e1b;
+  --surface-variant: #f8c8dc;
+  --on-surface-variant: #5a1828;
+  --outline: #dda0dd;
+  --secondary: #ff69b4;
 }
