@@ -21,9 +21,9 @@ export default function Footer() {
 
         {/* Theme Selector Section */}
         <div className="mb-16 flex flex-col items-center">
-          <h4 className="text-[10px] font-mono tracking-[0.3em] uppercase mb-10 opacity-50 text-center">
+          <h3 className="text-[10px] font-mono tracking-[0.3em] uppercase mb-10 text-primary font-bold text-center">
             {'// SYSTEM_THEME_SELECTOR'}
-          </h4>
+          </h3>
           <div className="flex gap-4 md:gap-8 flex-wrap justify-center">
             {themes.map((t) => (
               <button
@@ -33,9 +33,9 @@ export default function Footer() {
               >
                 <div
                   style={{ backgroundColor: t.color }}
-                  className="w-10 h-10 shadow-lg border border-outline/20 group-hover:scale-110 transition-transform ring-1 ring-offset-4 ring-transparent group-hover:ring-outline/50"
+                  className="w-10 h-10 shadow-lg border border-outline/40 group-hover:scale-110 transition-transform ring-1 ring-offset-4 ring-transparent group-hover:ring-outline/50"
                 ></div>
-                <span className="text-[8px] mt-3 font-mono tracking-widest opacity-40 group-hover:opacity-100 transition-opacity">
+                <span className="text-[8px] mt-3 font-mono tracking-widest text-on-surface-variant group-hover:text-primary transition-colors">
                   {t.label}
                 </span>
               </button>
@@ -48,7 +48,7 @@ export default function Footer() {
             <span className="text-xl font-black tracking-tighter text-foreground">
               cellolienrt
             </span>
-            <p className="text-[10px] font-mono mt-2 opacity-50 max-w-xs text-center md:text-left">
+            <p className="text-[10px] font-mono mt-2 text-on-surface-variant max-w-xs text-center md:text-left">
               SENIOR MULTIPURPOSE DEVELOPER // {new Date().getFullYear()} // BUILT WITH NEXT.JS & SUPABASE
             </p>
           </div>
@@ -61,8 +61,8 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-outline/10 flex flex-col items-center">
-          <p className="text-[9px] font-mono opacity-30 text-center">
+        <div className="mt-12 pt-8 border-t border-outline/20 flex flex-col items-center">
+          <p className="text-[9px] font-mono text-on-surface-variant/80 text-center">
             © {new Date().getFullYear()} MARCELLO LIENARTA. ALL RIGHTS RESERVED.
             <br />
             [SYSTEM_STATUS: OPERATIONAL] [ENCRYPTION: AES-256]

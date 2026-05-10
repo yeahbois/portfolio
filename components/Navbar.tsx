@@ -15,7 +15,7 @@ export default function Navbar() {
               <span className="text-2xl font-black tracking-tighter text-foreground glitch-effect">
                 cellolienrt
               </span>
-              <span className="hidden sm:inline-block text-[10px] font-mono border border-outline px-1 text-on-surface-variant">
+              <span className="hidden sm:inline-block text-[10px] font-mono border border-outline px-1 text-foreground">
                 v1.0.1
               </span>
             </Link>
@@ -24,13 +24,13 @@ export default function Navbar() {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             <Link href="#projects" className="text-sm font-mono hover:text-primary transition-colors flex items-center">
-              <span className="mr-1 text-[10px] opacity-50">01.</span> PROJECTS
+              <span className="mr-1 text-[10px] text-primary">01.</span> PROJECTS
             </Link>
             <Link href="#experience" className="text-sm font-mono hover:text-primary transition-colors flex items-center">
-              <span className="mr-1 text-[10px] opacity-50">02.</span> EXPERIENCE
+              <span className="mr-1 text-[10px] text-primary">02.</span> EXPERIENCE
             </Link>
             <Link href="#skills" className="text-sm font-mono hover:text-primary transition-colors flex items-center">
-              <span className="mr-1 text-[10px] opacity-50">03.</span> SKILLS
+              <span className="mr-1 text-[10px] text-primary">03.</span> SKILLS
             </Link>
             <Link
               href="/resume"
@@ -45,10 +45,13 @@ export default function Navbar() {
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-foreground p-2"
+              aria-label="Toggle menu"
             >
-              <span className="material-symbols-outlined">
-                {isOpen ? 'close' : 'menu'}
-              </span>
+              {isOpen ? (
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+              )}
             </button>
           </div>
         </div>

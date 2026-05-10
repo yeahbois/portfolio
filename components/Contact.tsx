@@ -26,7 +26,7 @@ export default function Contact() {
         <div className="ascii-border p-8 bg-surface/30">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-[10px] font-mono mb-2 opacity-50 uppercase tracking-widest">
+              <label className="block text-[10px] font-mono mb-2 text-primary font-bold uppercase tracking-widest">
                 Source_Email
               </label>
               <input
@@ -39,7 +39,7 @@ export default function Contact() {
               />
             </div>
             <div>
-              <label className="block text-[10px] font-mono mb-2 opacity-50 uppercase tracking-widest">
+              <label className="block text-[10px] font-mono mb-2 text-primary font-bold uppercase tracking-widest">
                 Transmission_Payload
               </label>
               <textarea
@@ -55,17 +55,17 @@ export default function Contact() {
               type="submit"
               className="w-full py-4 bg-primary text-on-primary font-mono text-xs tracking-widest hover:opacity-90 transition-all flex items-center justify-center space-x-2"
             >
-              <span className="material-symbols-outlined text-sm">send</span>
+              <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M120-160v-640l760 320-760 320Zm80-120 474-200-474-200v140l240 60-240 60v140Zm0 0v-400 400Z"/></svg>
               <span>INITIALIZE_TRANSMISSION</span>
             </button>
           </form>
         </div>
 
         <div className="mt-12 text-center">
-          <p className="font-mono text-[10px] opacity-40 uppercase tracking-[0.3em] mb-4">Direct_Access</p>
+          <p className="font-mono text-[10px] text-primary font-bold uppercase tracking-[0.3em] mb-4">Direct_Access</p>
           <a
             href="mailto:marcellolienarta663@gmail.com"
-            className="text-xl font-bold hover:text-primary transition-colors border-b border-dashed border-outline/30 hover:border-primary"
+            className="text-xl font-bold hover:text-primary transition-colors border-b border-dashed border-outline/50 hover:border-primary"
           >
             marcellolienarta663@gmail.com
           </a>
