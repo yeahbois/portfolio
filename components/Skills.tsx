@@ -24,13 +24,13 @@ export default async function Skills() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {skillCategories?.map((cat) => (
-          <div key={cat.id} className="border-l border-primary/30 pl-6">
-            <h3 className="font-mono text-sm text-primary mb-6 tracking-[0.2em]">{cat.category}</h3>
+          <div key={cat.id} className="border-l border-primary pl-6">
+            <h3 className="font-mono text-sm text-primary font-bold mb-6 tracking-[0.2em]">{cat.category}</h3>
             <ul className="space-y-4">
               {cat.items?.map((skill: string) => (
                 <li key={skill} className="flex items-center group">
-                  <div className="w-1.5 h-1.5 bg-outline/40 mr-3 group-hover:bg-primary transition-colors"></div>
-                  <span className="font-mono text-sm opacity-80 group-hover:opacity-100 transition-opacity">{skill}</span>
+                  <div className="w-1.5 h-1.5 bg-primary mr-3 transition-colors"></div>
+                  <span className="font-mono text-sm text-on-surface group-hover:text-primary transition-colors">{skill}</span>
                 </li>
               ))}
             </ul>
@@ -38,8 +38,8 @@ export default async function Skills() {
         ))}
       </div>
 
-      <div className="mt-20 p-8 border border-outline/10 bg-surface-variant/5 text-center">
-        <p className="font-mono text-[10px] opacity-40 uppercase tracking-[0.5em] mb-4">Current_Focus</p>
+      <div className="mt-20 p-8 border border-outline/20 bg-surface-variant/5 text-center">
+        <p className="font-mono text-[10px] text-primary font-bold uppercase tracking-[0.5em] mb-4">Current_Focus</p>
         <p className="text-xl md:text-2xl font-bold tracking-tight">AI-Driven Infrastructure & Quantum-Safe Encryption</p>
       </div>
     </section>
