@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { generateResumeLatex } from '@/utils/resume-latex'
 
 export default function Dashboard() {
   const [experience, setExperience] = useState<any[]>([])
@@ -43,13 +44,18 @@ export default function Dashboard() {
     }
   }
 
+  const handleGenerateResume = () => {
+    const newContent = generateResumeLatex({ experience, projects, skills })
+    setResumeContent(newContent)
+  }
+
   const handleSaveResume = async () => {
     const res = await fetch('/api/resume', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content: resumeContent }),
     })
-    if (res.ok) alert('Resume template updated!')
+    if (res.ok) alert('Resume template updated and PDF deployment triggered!')
   }
 
   const handleDelete = async (type: string, id: string) => {
@@ -219,8 +225,16 @@ export default function Dashboard() {
 
               {activeTab === 'resume' && (
                 <div className="space-y-6">
-                  <h2 className="text-xl font-bold tracking-tight mb-4">RESUME_LATEX_TEMPLATE_EDITOR</h2>
-                  <p className="text-[10px] opacity-50 mb-4 tracking-wider">MODIFICATION_OF_RESUME.TEX_WILL_BE_REFLECTED_IN_NEXT_GENERATION_CYCLE</p>
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-xl font-bold tracking-tight">RESUME_LATEX_TEMPLATE_EDITOR</h2>
+                    <button
+                      onClick={handleGenerateResume}
+                      className="text-[10px] border border-primary text-primary px-4 py-2 hover:bg-primary hover:text-on-primary transition-all"
+                    >
+                      AUTO_GENERATE_FROM_DB.SH
+                    </button>
+                  </div>
+                  <p className="text-[10px] opacity-50 mb-4 tracking-wider uppercase">Modification of resume source will be deployed as PDF upon saving.</p>
                   <textarea
                     value={resumeContent}
                     onChange={(e) => setResumeContent(e.target.value)}
@@ -230,9 +244,9 @@ export default function Dashboard() {
                   <div className="flex justify-end">
                     <button
                       onClick={handleSaveResume}
-                      className="bg-primary text-on-primary px-8 py-3 text-[10px] tracking-widest hover:opacity-90"
+                      className="bg-primary text-on-primary px-8 py-3 text-[10px] tracking-widest hover:opacity-90 transition-all uppercase"
                     >
-                      SAVE_AND_DEPLOY_TEMPLATE.SH
+                      Edit Resume and Deploy
                     </button>
                   </div>
                 </div>

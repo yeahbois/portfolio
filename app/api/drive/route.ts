@@ -1,13 +1,15 @@
+import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 
 const GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
 const DRIVE_API = "https://www.googleapis.com/drive/v3/files";
 
-export default async function handler(req, res) {
-  const { id } = req.query;
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get("id");
 
   if (!id) {
-    return res.status(400).json({ error: "Missing file ID" });
+    return NextResponse.json({ error: "Missing file ID" }, { status: 400 });
   }
 
   try {
@@ -23,23 +25,23 @@ export default async function handler(req, res) {
     );
 
     if (!driveRes.ok) {
-      return res.status(403).json({
+      return NextResponse.json({
         error: "File not accessible. Make sure it is shared to the service account.",
-      });
+      }, { status: 403 });
     }
 
     const data = await driveRes.json();
 
     const cdn = `https://lh3.googleusercontent.com/d/${id}`;
 
-    return res.status(200).json({
+    return NextResponse.json({
       name: data.name,
       mimeType: data.mimeType,
       cdn,
     });
 
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
 
@@ -54,7 +56,7 @@ async function getAccessToken() {
     iat: now,
   };
 
-  const privateKey = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n");
+  const privateKey = (process.env.GOOGLE_PRIVATE_KEY || "").replace(/\\n/g, "\n");
 
   const token = jwt.sign(payload, privateKey, {
     algorithm: "RS256",
@@ -72,5 +74,8 @@ async function getAccessToken() {
   });
 
   const data = await res.json();
+  if (data.error) {
+    throw new Error(data.error_description || data.error);
+  }
   return data.access_token;
 }

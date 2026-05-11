@@ -1,0 +1,83 @@
+export function escapeLatex(str: string) {
+  if (!str) return '';
+  return str
+    .replace(/\\/g, '\\textbackslash{}')
+    .replace(/\{/g, '\\{')
+    .replace(/\}/g, '\\}')
+    .replace(/\$/g, '\\$')
+    .replace(/\&/g, '\\&')
+    .replace(/\#/g, '\\#')
+    .replace(/\_/g, '\\_')
+    .replace(/\%/g, '\\%')
+    .replace(/\~/g, '\\textasciitilde{}')
+    .replace(/\^/g, '\\textasciicircum{}');
+}
+
+export function generateResumeLatex(data: {
+  experience: any[];
+  projects: any[];
+  skills: any[];
+}) {
+  const { experience, projects, skills } = data;
+
+  const sortedExp = [...experience].sort((a, b) => (a.order_index || 0) - (b.order_index || 0));
+  const sortedProj = [...projects].sort((a, b) => (a.order_index || 0) - (b.order_index || 0));
+  const sortedSkills = [...skills].sort((a, b) => (a.order_index || 0) - (b.order_index || 0));
+
+  return `\\documentclass[11pt,a4paper]{article}
+\\usepackage[utf8]{inputenc}
+\\usepackage[margin=0.75in]{geometry}
+\\usepackage{hyperref}
+\\usepackage{xcolor}
+\\usepackage{enumitem}
+
+\\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,
+    urlcolor=blue,
+    pdftitle={Marcello Lienarta - Resume},
+}
+
+\\pagestyle{empty}
+\\setlist[itemize]{noitemsep, topsep=0pt, leftmargin=1.5em}
+
+\\begin{document}
+
+\\begin{center}
+    {\\Huge \\textbf{Marcello Lienarta}} \\\\
+    \\vspace{2pt}
+    {Senior Multipurpose Developer} \\\\
+    \\vspace{4pt}
+    \\href{mailto:marcellolienarta663@gmail.com}{marcellolienarta663@gmail.com} $|$ \\href{https://celloportfolio.vercel.app/}{celloportfolio.vercel.app} $|$ San Diego, CA
+\\end{center}
+
+\\section*{Experience}
+\\hrule
+\\vspace{6pt}
+${sortedExp.map(exp => `
+\\textbf{${escapeLatex(exp.company)}} \\hfill ${escapeLatex(exp.period)} \\\\
+\\textit{${escapeLatex(exp.role)}} \\hfill ${escapeLatex(exp.location || '')}
+\\begin{itemize}
+${exp.points.map((p: string) => `    \\item ${escapeLatex(p)}`).join('\n')}
+\\end{itemize}
+\\vspace{8pt}`).join('')}
+
+\\section*{Projects}
+\\hrule
+\\vspace{6pt}
+${sortedProj.map(proj => `
+\\textbf{${escapeLatex(proj.title)}} $|$ \\textit{${escapeLatex(proj.tech.join(', '))}} \\hfill \\href{${proj.href}}{Link}
+\\begin{itemize}
+${proj.points.map((p: string) => `    \\item ${escapeLatex(p)}`).join('\n')}
+\\end{itemize}
+\\vspace{8pt}`).join('')}
+
+\\section*{Skills}
+\\hrule
+\\vspace{6pt}
+${sortedSkills.map(skill => `
+\\textbf{${escapeLatex(skill.category.replace(/_/g, ' '))}}: ${escapeLatex(skill.items.join(', '))}`).join(' \\\\ \n')}
+
+\\end{document}`;
+}
