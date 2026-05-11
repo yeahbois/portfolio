@@ -24,8 +24,8 @@ export default function Hero() {
             {'>'} INITIALIZING_SYSTEM_CORE...
           </p>
           <h1 className="text-4xl md:text-7xl font-black tracking-tighter leading-tight">
-            MARCELLO <br />
-            <span className="text-on-surface-variant">LIENARTA</span>
+            Hi there! <br />
+            <span className="text-on-surface-variant">I'm Marcello Lienarta</span>
           </h1>
         </div>
 
