@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/utils/supabase/server'
+import { createClient, createAdminClient } from '@/utils/supabase/server'
 import { cookies } from 'next/headers'
 import { isAuthenticated } from '@/utils/auth'
 
@@ -53,9 +53,8 @@ export async function GET() {
 export async function POST(request: Request) {
   if (!(await isAuthenticated())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const { content, pdfBase64 } = await request.json()
-  const cookieStore = await cookies()
-  const supabase = createClient(cookieStore)
-
+  const supabase = createAdminClient()
+  
   // 1. Save LaTeX to Database
   const { error: dbError } = await supabase.from('settings').upsert({ key: 'resume_latex', value: content })
   if (dbError) return NextResponse.json({ error: dbError.message }, { status: 400 })

@@ -61,6 +61,20 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow public read access on settings') THEN
         CREATE POLICY "Allow public read access on settings" ON settings FOR SELECT USING (true);
     END IF;
+
+    -- Admin/Authenticated Access Policies (Allow all operations for authenticated users)
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow auth admin to manage experience') THEN
+        CREATE POLICY "Allow auth admin to manage experience" ON experience FOR ALL TO authenticated USING (true) WITH CHECK (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow auth admin to manage projects') THEN
+        CREATE POLICY "Allow auth admin to manage projects" ON projects FOR ALL TO authenticated USING (true) WITH CHECK (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow auth admin to manage skills') THEN
+        CREATE POLICY "Allow auth admin to manage skills" ON skills FOR ALL TO authenticated USING (true) WITH CHECK (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow auth admin to manage settings') THEN
+        CREATE POLICY "Allow auth admin to manage settings" ON settings FOR ALL TO authenticated USING (true) WITH CHECK (true);
+    END IF;
 END $$;
 
 -- Insert Initial Data (Experience)

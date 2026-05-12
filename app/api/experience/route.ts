@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/utils/supabase/server'
+import { createClient, createAdminClient } from '@/utils/supabase/server'
 import { cookies } from 'next/headers'
 import { isAuthenticated } from '@/utils/auth'
 
@@ -13,8 +13,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   if (!(await isAuthenticated())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  const cookieStore = await cookies()
-  const supabase = createClient(cookieStore)
+  const supabase = createAdminClient()
   const body = await request.json()
   const { data, error } = await supabase.from('experience').insert([body]).select()
   if (error) return NextResponse.json({ error: error.message }, { status: 400 })
@@ -23,8 +22,7 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   if (!(await isAuthenticated())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  const cookieStore = await cookies()
-  const supabase = createClient(cookieStore)
+  const supabase = createAdminClient()
   const body = await request.json()
   const { id, ...updateData } = body
   const { data, error } = await supabase.from('experience').update(updateData).eq('id', id).select()
@@ -34,8 +32,7 @@ export async function PUT(request: Request) {
 
 export async function DELETE(request: Request) {
   if (!(await isAuthenticated())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  const cookieStore = await cookies()
-  const supabase = createClient(cookieStore)
+  const supabase = createAdminClient()
   const { searchParams } = new URL(request.url)
   const id = searchParams.get('id')
   if (!id) return NextResponse.json({ error: 'Missing ID' }, { status: 400 })

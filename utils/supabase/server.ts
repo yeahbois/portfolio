@@ -18,11 +18,24 @@ export const createClient = (cookieStore: Awaited<ReturnType<typeof cookies>>) =
             cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options))
           } catch {
             // The `setAll` method was called from a Server Component.
-            // This can be ignored if you have middleware refreshing
-            // user sessions.
           }
         },
       },
     },
+  );
+};
+
+// Admin client that bypasses RLS (for server-side admin routes only)
+export const createAdminClient = () => {
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+  return createServerClient(
+    supabaseUrl,
+    serviceKey,
+    {
+      cookies: {
+        getAll() { return [] },
+        setAll() { },
+      },
+    }
   );
 };
