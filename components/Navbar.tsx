@@ -32,11 +32,14 @@ export default function Navbar() {
             <Link href="#skills" className="text-sm font-mono hover:text-primary transition-colors flex items-center">
               <span className="mr-1 text-[10px] text-primary">03.</span> SKILLS
             </Link>
+            <Link href="#tools" className="text-sm font-mono hover:text-primary transition-colors flex items-center">
+              <span className="mr-1 text-[10px] text-primary">04.</span> TOOLS
+            </Link>
             <Link
               href="/resume"
               className="px-4 py-1 border border-primary text-primary text-sm font-mono hover:bg-primary hover:text-on-primary transition-all"
             >
-              RESUME.PDF
+              RESUME
             </Link>
           </div>
 
@@ -69,11 +72,15 @@ export default function Navbar() {
           <Link href="#skills" onClick={() => setIsOpen(false)} className="text-sm font-mono py-2 border-b border-outline/10">
             [03] SKILLS
           </Link>
+          <Link href="#tools" onClick={() => setIsOpen(false)} className="text-sm font-mono py-2 border-b border-outline/10">
+            [04] TOOLS
+          </Link>
           <Link
             href="/resume"
+            onClick={() => setIsOpen(false)}
             className="text-sm font-mono py-2 text-primary"
           >
-            [04] RESUME.PDF
+            [05] RESUME
           </Link>
         </div>
       )}

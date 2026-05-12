@@ -2,8 +2,6 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
 import { cookies } from 'next/headers'
 import { isAuthenticated } from '@/utils/auth'
-import fs from 'fs'
-import path from 'path'
 
 export async function GET() {
   const cookieStore = await cookies()
@@ -11,14 +9,40 @@ export async function GET() {
   const { data, error } = await supabase.from('settings').select('value').eq('key', 'resume_latex').single()
 
   if (error) {
-    // Fallback to default if not in DB
-    const defaultLatex = `\\documentclass[11pt,a4paper]{article}
+    const defaultLatex = `\\documentclass[9pt,a4paper]{article}
 \\usepackage[utf8]{inputenc}
-\\usepackage[margin=1in]{geometry}
+\\usepackage[margin=0.4in]{geometry}
 \\usepackage{hyperref}
-\\title{Resume}
+\\usepackage{xcolor}
+\\usepackage{enumitem}
+\\usepackage{titlesec}
+
+\\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,
+    urlcolor=blue,
+    pdftitle={Marcello Lienarta - Resume},
+}
+
+\\pagestyle{empty}
+\\setlist[itemize]{noitemsep, topsep=0pt, leftmargin=1.2em, partopsep=0pt, parsep=0pt}
+\\titlespacing*{\\section}{0pt}{5pt}{3pt}
+
 \\begin{document}
-\\maketitle
+
+\\begin{center}
+    {\\huge \\textbf{Marcello Lienarta}} \\\\
+    \\vspace{1pt}
+    {Multipurpose developer with +- 5 years of experience with web dev, ai, automation etc.} \\\\
+    \\vspace{2pt}
+    \\small \\href{mailto:marcellolienarta663@gmail.com}{marcellolienarta663@gmail.com} $|$ \\href{https://celloportfolio.vercel.app/}{celloportfolio.vercel.app} $|$ San Diego, CA
+\\end{center}
+
+\\section*{Experience}
+\\hrule
+\\vspace{2pt}
+% Data will be injected or edited here
 \\end{document}`
     return NextResponse.json({ content: defaultLatex })
   }
@@ -28,26 +52,31 @@ export async function GET() {
 
 export async function POST(request: Request) {
   if (!(await isAuthenticated())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  const { content } = await request.json()
+  const { content, pdfBase64 } = await request.json()
   const cookieStore = await cookies()
   const supabase = createClient(cookieStore)
 
-  const { error } = await supabase.from('settings').upsert({ key: 'resume_latex', value: content })
-  if (error) return NextResponse.json({ error: error.message }, { status: 400 })
+  // 1. Save LaTeX to Database
+  const { error: dbError } = await supabase.from('settings').upsert({ key: 'resume_latex', value: content })
+  if (dbError) return NextResponse.json({ error: dbError.message }, { status: 400 })
 
-  // Trigger PDF generation
-  try {
-    const response = await fetch(`https://latexonline.cc/compile?text=${encodeURIComponent(content)}`)
+  // 2. If PDF data is provided, upload to Supabase Storage
+  if (pdfBase64) {
+      try {
+          const buffer = Buffer.from(pdfBase64.split(',')[1], 'base64')
+          const { error: uploadError } = await supabase.storage
+            .from('resume')
+            .upload('resume.pdf', buffer, {
+              contentType: 'application/pdf',
+              upsert: true
+            })
 
-    if (response.ok) {
-      const pdfBuffer = await response.arrayBuffer()
-      const publicPath = path.join(process.cwd(), 'public', 'resume.pdf')
-      fs.writeFileSync(publicPath, Buffer.from(pdfBuffer))
-    } else {
-      console.error('LaTeX compilation failed via external API')
-    }
-  } catch (err) {
-    console.error('Error calling LaTeX compilation API:', err)
+          if (uploadError) {
+              return NextResponse.json({ error: 'Storage upload failed: ' + uploadError.message }, { status: 500 })
+          }
+      } catch (err: any) {
+          return NextResponse.json({ error: 'PDF processing error: ' + err.message }, { status: 500 })
+      }
   }
 
   return NextResponse.json({ success: true })
