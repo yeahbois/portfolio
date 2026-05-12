@@ -100,34 +100,38 @@ INSERT INTO skills (category, items, order_index) VALUES
 ON CONFLICT DO NOTHING;
 
 -- Insert Initial Resume LaTeX
-INSERT INTO settings (key, value) VALUES ('resume_latex', '\documentclass[11pt,a4paper]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[margin=1in]{geometry}
-\usepackage{hyperref}
-\usepackage{xcolor}
+INSERT INTO settings (key, value) VALUES ('resume_latex', '\\documentclass[9pt,a4paper]{article}
+\\usepackage[utf8]{inputenc}
+\\usepackage[margin=0.4in]{geometry}
+\\usepackage{hyperref}
+\\usepackage{xcolor}
+\\usepackage{enumitem}
+\\usepackage{titlesec}
 
-\hypersetup{
+\\hypersetup{
     colorlinks=true,
-    linkcolor=blue,
+    linkcolor=black,
     filecolor=magenta,
-    urlcolor=cyan,
+    urlcolor=blue,
+    pdftitle={Marcello Lienarta - Resume},
 }
 
-\title{Marcello Lienarta - Resume}
-\author{Marcello Lienarta}
-\date{\today}
+\\pagestyle{empty}
+\\setlist[itemize]{noitemsep, topsep=0pt, leftmargin=1.2em, partopsep=0pt, parsep=0pt}
+\\titlespacing*{\\section}{0pt}{5pt}{3pt}
 
-\begin{document}
+\\begin{document}
 
-\maketitle
+\\begin{center}
+    {\\huge \\textbf{Marcello Lienarta}} \\\\
+    \\vspace{1pt}
+    {Multipurpose developer with +- 5 years of experience with web dev, ai, automation etc.} \\\\
+    \\vspace{2pt}
+    \\small \\href{mailto:marcellolienarta663@gmail.com}{marcellolienarta663@gmail.com} $|$ \\href{https://linkedin.com/in/marcellolienarta}{linkedin.com/in/marcellolienarta} $|$ \\href{https://celloportfolio.vercel.app}{celloportfolio.vercel.app} $|$ Jakarta, Indonesia
+\\end{center}
 
-\section{Contact}
-Email: \href{mailto:marcellolienarta663@gmail.com}{marcellolienarta663@gmail.com}
-
-\section{Summary}
-Senior Multipurpose Developer.
-
-\section{Experience}
-Placeholder for experience data.
-
-\end{document}') ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
+\\section*{Experience}
+\\hrule
+\\vspace{2pt}
+% Data will be injected or edited here
+\\end{document}') ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;

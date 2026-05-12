@@ -119,7 +119,7 @@ export default function DriveCDN() {
 
         <div className="mt-8">
           <p className="text-[9px] opacity-30 leading-relaxed font-mono uppercase italic">
-            Note: Ensure file is shared with "Anyone with the link" or shared to the service account email provided in configuration.
+            Note: Ensure file is shared with "Anyone with the link" or shared to the service account email (drivecdn@drive-as-cdn.iam.gserviceaccount.com).
           </p>
         </div>
       </div>

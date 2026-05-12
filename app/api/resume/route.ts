@@ -36,7 +36,7 @@ export async function GET() {
     \\vspace{1pt}
     {Multipurpose developer with +- 5 years of experience with web dev, ai, automation etc.} \\\\
     \\vspace{2pt}
-    \\small \\href{mailto:marcellolienarta663@gmail.com}{marcellolienarta663@gmail.com} $|$ \\href{https://celloportfolio.vercel.app/}{celloportfolio.vercel.app} $|$ San Diego, CA
+    \\small \\href{mailto:marcellolienarta663@gmail.com}{marcellolienarta663@gmail.com} $|$ \\href{https://linkedin.com/in/marcellolienarta}{linkedin.com/in/marcellolienarta} $|$ \\href{https://celloportfolio.vercel.app}{celloportfolio.vercel.app} $|$ Jakarta, Indonesia
 \\end{center}
 
 \\section*{Experience}
@@ -54,28 +54,28 @@ export async function POST(request: Request) {
   if (!(await isAuthenticated())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const { content, pdfBase64 } = await request.json()
   const supabase = createAdminClient()
-  
+
   // 1. Save LaTeX to Database
   const { error: dbError } = await supabase.from('settings').upsert({ key: 'resume_latex', value: content })
   if (dbError) return NextResponse.json({ error: dbError.message }, { status: 400 })
 
   // 2. If PDF data is provided, upload to Supabase Storage
   if (pdfBase64) {
-      try {
-          const buffer = Buffer.from(pdfBase64.split(',')[1], 'base64')
-          const { error: uploadError } = await supabase.storage
-            .from('resume')
-            .upload('resume.pdf', buffer, {
-              contentType: 'application/pdf',
-              upsert: true
-            })
+    try {
+      const buffer = Buffer.from(pdfBase64.split(',')[1], 'base64')
+      const { error: uploadError } = await supabase.storage
+        .from('resume')
+        .upload('resume.pdf', buffer, {
+          contentType: 'application/pdf',
+          upsert: true
+        })
 
-          if (uploadError) {
-              return NextResponse.json({ error: 'Storage upload failed: ' + uploadError.message }, { status: 500 })
-          }
-      } catch (err: any) {
-          return NextResponse.json({ error: 'PDF processing error: ' + err.message }, { status: 500 })
+      if (uploadError) {
+        return NextResponse.json({ error: 'Storage upload failed: ' + uploadError.message }, { status: 500 })
       }
+    } catch (err: any) {
+      return NextResponse.json({ error: 'PDF processing error: ' + err.message }, { status: 500 })
+    }
   }
 
   return NextResponse.json({ success: true })
