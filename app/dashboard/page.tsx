@@ -1,14 +1,64 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { generateResumeLatex } from '@/utils/resume-latex'
 import jsPDF from 'jspdf'
 
+interface Experience {
+  id: string;
+  company: string;
+  role: string;
+  period: string;
+  location?: string;
+  points: string[];
+  order_index: number;
+}
+
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  tech: string[];
+  href: string;
+  points: string[];
+  order_index: number;
+}
+
+interface PublicProject {
+  id: string;
+  name: string;
+  images: string[];
+  description: string;
+  details: string;
+  creator: string;
+  status_percentage: number;
+  status_message: string;
+  order_index: number;
+}
+
+interface Blog {
+  id: string;
+  title: string;
+  content: string;
+  images: string[];
+  date: string;
+  order_index: number;
+}
+
+interface Skill {
+  id: string;
+  category: string;
+  items: string[];
+  order_index: number;
+}
+
 export default function Dashboard() {
-  const [experience, setExperience] = useState<any[]>([])
-  const [projects, setProjects] = useState<any[]>([])
-  const [skills, setSkills] = useState<any[]>([])
+  const [experience, setExperience] = useState<Experience[]>([])
+  const [projects, setProjects] = useState<Project[]>([])
+  const [publicProjects, setPublicProjects] = useState<PublicProject[]>([])
+  const [blogs, setBlogs] = useState<Blog[]>([])
+  const [skills, setSkills] = useState<Skill[]>([])
   const [resumeContent, setResumeContent] = useState('')
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('experience')
@@ -17,35 +67,68 @@ export default function Dashboard() {
   const [progress, setProgress] = useState(0)
   const [statusText, setStatusText] = useState('')
   const router = useRouter()
-  const iframeRef = useRef<HTMLIFrameElement>(null)
 
   useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true)
+      try {
+        const [expRes, projRes, skillRes, resumeRes, publicProjRes, blogsRes] = await Promise.all([
+          fetch('/api/experience'),
+          fetch('/api/projects'),
+          fetch('/api/skills'),
+          fetch('/api/resume'),
+          fetch('/api/public_projects'),
+          fetch('/api/blogs')
+        ])
+
+        const expData = await expRes.json()
+        const projData = await projRes.json()
+        const skillData = await skillRes.json()
+        const resumeData = await resumeRes.json()
+        const publicProjData = await publicProjRes.json()
+        const blogsData = await blogsRes.json()
+
+        setExperience(Array.isArray(expData) ? expData : [])
+        setProjects(Array.isArray(projData) ? projData : [])
+        setSkills(Array.isArray(skillData) ? skillData : [])
+        setResumeContent(resumeData.content || '')
+        setPublicProjects(Array.isArray(publicProjData) ? publicProjData : [])
+        setBlogs(Array.isArray(blogsData) ? blogsData : [])
+      } catch (err) {
+        console.error('Failed to fetch dashboard data', err)
+      } finally {
+        setLoading(false)
+      }
+    }
     fetchData()
   }, [])
 
-  const fetchData = async () => {
-    setLoading(true)
+  const refreshData = async () => {
     try {
-      const [expRes, projRes, skillRes, resumeRes] = await Promise.all([
+      const [expRes, projRes, skillRes, resumeRes, publicProjRes, blogsRes] = await Promise.all([
         fetch('/api/experience'),
         fetch('/api/projects'),
         fetch('/api/skills'),
-        fetch('/api/resume')
+        fetch('/api/resume'),
+        fetch('/api/public_projects'),
+        fetch('/api/blogs')
       ])
 
       const expData = await expRes.json()
       const projData = await projRes.json()
       const skillData = await skillRes.json()
       const resumeData = await resumeRes.json()
+      const publicProjData = await publicProjRes.json()
+      const blogsData = await blogsRes.json()
 
       setExperience(Array.isArray(expData) ? expData : [])
       setProjects(Array.isArray(projData) ? projData : [])
       setSkills(Array.isArray(skillData) ? skillData : [])
       setResumeContent(resumeData.content || '')
+      setPublicProjects(Array.isArray(publicProjData) ? publicProjData : [])
+      setBlogs(Array.isArray(blogsData) ? blogsData : [])
     } catch (err) {
-      console.error('Failed to fetch dashboard data', err)
-    } finally {
-      setLoading(false)
+      console.error('Failed to refresh dashboard data', err)
     }
   }
 
@@ -69,150 +152,170 @@ export default function Dashboard() {
     });
   };
 
-  const handleGenerateResume = async () => {
+  const handleGenerateFromDB = async () => {
     setActionLoading(true);
     setProgress(0);
     setStatusText('GENERATING_LATEX_FROM_DB...');
 
-    await simulateProgress(40, 500);
+    await simulateProgress(50, 400);
     const newContent = generateResumeLatex({ experience, projects, skills });
     setResumeContent(newContent);
 
-    setStatusText('AUTOSAVING_TO_DATABASE...');
-    await simulateProgress(80, 500);
+    await simulateProgress(100, 200);
+    setStatusText('GENERATION_COMPLETE');
+    setTimeout(() => { setActionLoading(false); setProgress(0); setStatusText(''); }, 800);
+  };
 
+  const handleSaveToDB = async () => {
+    setActionLoading(true);
+    setProgress(0);
+    setStatusText('SAVING_LATEX_TO_DATABASE...');
+
+    await simulateProgress(50, 400);
     const res = await fetch('/api/resume', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: newContent }),
+      body: JSON.stringify({ content: resumeContent }),
     });
 
     if (res.ok) {
-      await simulateProgress(100, 300);
-      setStatusText('GENERATION_AND_SAVE_COMPLETE');
-      setTimeout(() => { setActionLoading(false); setProgress(0); setStatusText(''); }, 1500);
+      await simulateProgress(100, 200);
+      setStatusText('SAVE_COMPLETE');
+      setTimeout(() => { setActionLoading(false); setProgress(0); setStatusText(''); }, 800);
     } else {
-      alert("Failed to autosave generated latex");
+      alert("Failed to save latex");
       setActionLoading(false);
     }
   };
 
-  // Improved compilation flow using jsPDF (simulating LaTeX rendering for now)
   const handleCompileAndDeploy = async () => {
     setActionLoading(true);
     setProgress(0);
-    setStatusText('INITIALIZING_COMPILER...');
-
-    await simulateProgress(20, 800);
-    setStatusText('COMPILING_LATEX_SOURCE...');
+    setStatusText('FETCHING_SAVED_LATEX...');
 
     try {
-      // Since we can't easily compile LaTeX in the browser without a massive engine,
-      // and we want to keep the one-page requirement, we'll use jsPDF to generate
-      // the PDF based on the current state. In a real scenario, this would be a WASM LaTeX engine.
-      // For this task, we'll honor the "Compile" request by generating the PDF client-side.
+      const resumeRes = await fetch('/api/resume');
+      const resumeData = await resumeRes.json();
+      const contentToCompile = resumeData.content;
+
+      await simulateProgress(20, 400);
+      setStatusText('COMPILING_PROFESSIONAL_RESUME...');
 
       const doc = new jsPDF({ format: 'a4', unit: 'pt' });
-      const margin = 40;
-      let yPos = margin;
+      const FONT_REGULAR = 'times';
+      const FONT_BOLD = 'times';
 
-      // Header
-      doc.setFontSize(22);
-      doc.setFont('helvetica', 'bold');
+      const margin = 30;
+      let yPos = margin + 20;
+
+      doc.setFont(FONT_BOLD, 'bold');
+      doc.setFontSize(20);
       doc.text('Marcello Lienarta', 297, yPos, { align: 'center' });
       yPos += 20;
 
+      doc.setFont(FONT_REGULAR, 'normal');
       doc.setFontSize(10);
-      doc.setFont('helvetica', 'normal');
-      doc.text('Multipurpose developer with +- 5 years of experience with web dev, ai, automation etc.', 297, yPos, { align: 'center' });
-      yPos += 15;
+      doc.text('Multipurpose Developer with 5 Years of Experience in WebDev, AI, Automation, etc.', 297, yPos, { align: 'center' });
+      yPos += 14;
 
       doc.setFontSize(9);
-      doc.text('marcellolienarta663@gmail.com | celloportfolio.vercel.app | San Diego, CA', 297, yPos, { align: 'center' });
-      yPos += 25;
+      doc.text('marcellolienarta663@gmail.com | linkedin.com/in/marcellolienarta | celloportfolio.vercel.app | West Jakarta, Indonesia', 297, yPos, { align: 'center' });
+      yPos += 20;
 
       const addSection = (title: string) => {
-        doc.setFontSize(12);
-        doc.setFont('helvetica', 'bold');
-        doc.text(title, margin, yPos);
-        yPos += 5;
+        doc.setFont(FONT_BOLD, 'bold');
+        doc.setFontSize(11);
+        doc.text(title.toUpperCase(), margin, yPos);
+        yPos += 3;
         doc.setLineWidth(0.5);
         doc.line(margin, yPos, 595 - margin, yPos);
-        yPos += 15;
+        yPos += 12;
       };
 
-      // Experience
       addSection('Experience');
-      experience.forEach(exp => {
+      [...experience].sort((a,b) => (a.order_index||0)-(b.order_index||0)).forEach(exp => {
         doc.setFontSize(10);
-        doc.setFont('helvetica', 'bold');
+        doc.setFont(FONT_BOLD, 'bold');
         doc.text(exp.company, margin, yPos);
-        doc.setFont('helvetica', 'normal');
+        doc.setFont(FONT_REGULAR, 'normal');
         doc.text(exp.period, 595 - margin, yPos, { align: 'right' });
-        yPos += 12;
-        doc.setFont('helvetica', 'italic');
+        yPos += 11;
+
+        doc.setFont(FONT_REGULAR, 'italic');
         doc.text(exp.role, margin, yPos);
-        yPos += 12;
-        doc.setFont('helvetica', 'normal');
+        if (exp.location) {
+            doc.text(exp.location, 595 - margin, yPos, { align: 'right' });
+        }
+        yPos += 11;
+
+        doc.setFont(FONT_REGULAR, 'normal');
         doc.setFontSize(9);
         exp.points?.forEach((p: string) => {
-          const lines = doc.splitTextToSize(`• ${p}`, 595 - 2 * margin - 10);
-          doc.text(lines, margin + 10, yPos);
-          yPos += lines.length * 10 + 2;
+          const lines = doc.splitTextToSize(`• ${p}`, 595 - 2 * margin - 15);
+          doc.text(lines, margin + 10, yPos, { charSpace: 0 });
+          yPos += lines.length * 10.5;
         });
-        yPos += 5;
+        yPos += 4;
       });
 
-      // Projects
-      yPos += 10;
+      yPos += 4;
       addSection('Projects');
-      projects.forEach(proj => {
+      [...projects].sort((a,b) => (a.order_index||0)-(b.order_index||0)).forEach(proj => {
         doc.setFontSize(10);
-        doc.setFont('helvetica', 'bold');
+        doc.setFont(FONT_BOLD, 'bold');
         doc.text(proj.title, margin, yPos);
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(8);
-        doc.text(` | ${proj.tech.join(', ')}`, margin + doc.getTextWidth(proj.title), yPos);
-        yPos += 12;
+
+        const techText = ` | ${proj.tech.join(', ')}`;
+        doc.setFont(FONT_REGULAR, 'normal');
+        doc.setFontSize(9);
+        doc.text(techText, margin + doc.getTextWidth(proj.title), yPos);
+
+        if (proj.href && proj.href !== '#') {
+             doc.text('Link', 595 - margin, yPos, { align: 'right' });
+        }
+
+        yPos += 11;
         doc.setFontSize(9);
         proj.points?.forEach((p: string) => {
-          const lines = doc.splitTextToSize(`• ${p}`, 595 - 2 * margin - 10);
-          doc.text(lines, margin + 10, yPos);
-          yPos += lines.length * 10 + 2;
+          const lines = doc.splitTextToSize(`• ${p}`, 595 - 2 * margin - 15);
+          doc.text(lines, margin + 10, yPos, { charSpace: 0 });
+          yPos += lines.length * 10.5;
         });
-        yPos += 5;
+        yPos += 4;
       });
 
-      // Skills
-      yPos += 10;
+      yPos += 4;
       addSection('Skills');
-      skills.forEach(skill => {
+      [...skills].sort((a,b) => (a.order_index||0)-(b.order_index||0)).forEach(skill => {
+        doc.setFontSize(9);
         const cat = `${skill.category.replace(/_/g, ' ')}: `;
-        doc.setFont('helvetica', 'bold');
+        doc.setFont(FONT_BOLD, 'bold');
         doc.text(cat, margin, yPos);
-        doc.setFont('helvetica', 'normal');
+
+        doc.setFont(FONT_REGULAR, 'normal');
         const items = skill.items.join(', ');
-        doc.text(items, margin + doc.getTextWidth(cat), yPos);
-        yPos += 12;
+        const lines = doc.splitTextToSize(items, 595 - 2 * margin - doc.getTextWidth(cat) - 5);
+        doc.text(lines, margin + doc.getTextWidth(cat) + 2, yPos, { charSpace: 0 });
+        yPos += Math.max(11, lines.length * 10.5);
       });
 
       const pdfDataUri = doc.output('datauristring');
 
-      await simulateProgress(60, 1000);
+      await simulateProgress(70, 800);
       setStatusText('UPLOADING_TO_CLOUD_STORAGE...');
 
       const res = await fetch('/api/resume', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          content: resumeContent,
+          content: contentToCompile,
           pdfBase64: pdfDataUri
         }),
       });
 
       if (res.ok) {
-        await simulateProgress(100, 500);
-        setStatusText('PDF_DEPLOYED_SUCCESSFULLY');
+        await simulateProgress(100, 400);
+        setStatusText('RESUME_PDF_UPDATED');
         setTimeout(() => { setActionLoading(false); setProgress(0); setStatusText(''); }, 1500);
       } else {
         const err = await res.json();
@@ -230,7 +333,7 @@ export default function Dashboard() {
     setStatusText(`DELETING_${type.toUpperCase()}_RECORD...`);
     const res = await fetch(`/api/${type}?id=${id}`, { method: 'DELETE' })
     if (res.ok) {
-      await fetchData();
+      await refreshData();
     }
     setActionLoading(false);
     setStatusText('');
@@ -248,7 +351,9 @@ export default function Dashboard() {
     if (data.points) data.points = data.points.split('\n').filter((p: string) => p.trim() !== '')
     if (data.tech) data.tech = data.tech.split(',').map((t: string) => t.trim()).filter((t: string) => t !== '')
     if (data.items) data.items = data.items.split(',').map((i: string) => i.trim()).filter((i: string) => i !== '')
+    if (data.images) data.images = data.images.split('\n').map((i: string) => i.trim()).filter((i: string) => i !== '')
     if (data.order_index) data.order_index = parseInt(data.order_index)
+    if (data.status_percentage) data.status_percentage = parseInt(data.status_percentage)
 
     const method = editItem ? 'PUT' : 'POST'
     const payload = editItem ? { ...data, id: editItem.id } : data
@@ -264,7 +369,7 @@ export default function Dashboard() {
       setProgress(100);
       setStatusText('TRANSACTION_SUCCESS');
       setEditItem(null)
-      await fetchData()
+      await refreshData()
       setTimeout(() => { setActionLoading(false); setProgress(0); setStatusText(''); }, 1000);
     } else {
       const err = await res.json()
@@ -309,22 +414,22 @@ export default function Dashboard() {
         </header>
 
         <div className="flex space-x-4 mb-8 overflow-x-auto pb-2">
-          {['experience', 'projects', 'skills', 'resume'].map((tab) => (
+          {['experience', 'projects', 'public_projects', 'blogs', 'skills', 'resume'].map((tab) => (
             <button
               key={tab}
               onClick={() => { setActiveTab(tab); setEditItem(null); }}
               className={`px-6 py-2 text-[10px] tracking-widest uppercase border whitespace-nowrap transition-all ${activeTab === tab ? 'bg-primary text-on-primary border-primary' : 'border-outline/20 opacity-50 hover:opacity-100'
                 }`}
             >
-              {tab}.DAT
+              {tab.replace('_', ' ')}.DAT
             </button>
           ))}
         </div>
 
         <main className="ascii-border p-6 bg-surface/30 min-h-[400px]">
-          {editItem || activeTab === 'new_experience' || activeTab === 'new_projects' || activeTab === 'new_skills' ? (
+          {editItem || activeTab.startsWith('new_') ? (
             <div className="max-w-2xl mx-auto">
-              <h2 className="text-xl font-bold mb-6 uppercase">{editItem ? 'Edit' : 'Add New'} {activeTab.replace('new_', '')}</h2>
+              <h2 className="text-xl font-bold mb-6 uppercase">{editItem ? 'Edit' : 'Add New'} {activeTab.replace('new_', '').replace('_', ' ')}</h2>
               <form onSubmit={(e) => handleSubmit(e, activeTab.startsWith('new_') ? activeTab.replace('new_', '') : activeTab)} className="space-y-4">
                 {activeTab.includes('experience') && (
                   <>
@@ -335,13 +440,33 @@ export default function Dashboard() {
                     <textarea name="points" defaultValue={editItem?.points?.join('\n')} placeholder="Points (one per line)" className="w-full p-2 bg-background border border-outline/20 h-32 focus:border-primary outline-none" />
                   </>
                 )}
-                {activeTab.includes('projects') && (
+                {(activeTab === 'projects' || activeTab === 'new_projects') && (
                   <>
                     <input name="title" defaultValue={editItem?.title} placeholder="Title" className="w-full p-2 bg-background border border-outline/20 focus:border-primary outline-none" required />
                     <input name="description" defaultValue={editItem?.description} placeholder="Description" className="w-full p-2 bg-background border border-outline/20 focus:border-primary outline-none" />
                     <input name="href" defaultValue={editItem?.href} placeholder="Link (href)" className="w-full p-2 bg-background border border-outline/20 focus:border-primary outline-none" />
                     <input name="tech" defaultValue={editItem?.tech?.join(', ')} placeholder="Tech (comma separated)" className="w-full p-2 bg-background border border-outline/20 focus:border-primary outline-none" />
                     <textarea name="points" defaultValue={editItem?.points?.join('\n')} placeholder="Points (one per line)" className="w-full p-2 bg-background border border-outline/20 h-32 focus:border-primary outline-none" />
+                  </>
+                )}
+                {activeTab.includes('public_projects') && (
+                  <>
+                    <input name="name" defaultValue={editItem?.name} placeholder="Project Name" className="w-full p-2 bg-background border border-outline/20 focus:border-primary outline-none" required />
+                    <input name="creator" defaultValue={editItem?.creator} placeholder="Creator" className="w-full p-2 bg-background border border-outline/20 focus:border-primary outline-none" />
+                    <textarea name="images" defaultValue={editItem?.images?.join('\n')} placeholder="Image URLs (one per line)" className="w-full p-2 bg-background border border-outline/20 h-24 focus:border-primary outline-none" />
+                    <input name="description" defaultValue={editItem?.description} placeholder="Short Description" className="w-full p-2 bg-background border border-outline/20 focus:border-primary outline-none" />
+                    <textarea name="details" defaultValue={editItem?.details} placeholder="Full Project Details" className="w-full p-2 bg-background border border-outline/20 h-32 focus:border-primary outline-none" />
+                    <div className="flex gap-4">
+                      <input name="status_percentage" type="number" defaultValue={editItem?.status_percentage || 0} placeholder="Status %" className="w-1/3 p-2 bg-background border border-outline/20 focus:border-primary outline-none" />
+                      <input name="status_message" defaultValue={editItem?.status_message} placeholder="Status Message (e.g. Completed)" className="w-2/3 p-2 bg-background border border-outline/20 focus:border-primary outline-none" />
+                    </div>
+                  </>
+                )}
+                {activeTab.includes('blogs') && (
+                  <>
+                    <input name="title" defaultValue={editItem?.title} placeholder="Blog Title" className="w-full p-2 bg-background border border-outline/20 focus:border-primary outline-none" required />
+                    <textarea name="images" defaultValue={editItem?.images?.join('\n')} placeholder="Image URLs (one per line)" className="w-full p-2 bg-background border border-outline/20 h-24 focus:border-primary outline-none" />
+                    <textarea name="content" defaultValue={editItem?.content} placeholder="Blog Content (Markdown supported)" className="w-full p-2 bg-background border border-outline/20 h-64 focus:border-primary outline-none" />
                   </>
                 )}
                 {activeTab.includes('skills') && (
@@ -410,6 +535,54 @@ export default function Dashboard() {
                 </div>
               )}
 
+              {activeTab === 'public_projects' && (
+                <div className="space-y-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-xl font-bold tracking-tight uppercase">Public_Projects_Manager</h2>
+                    <button onClick={() => setActiveTab('new_public_projects')} className="text-[10px] bg-primary text-on-primary px-4 py-2 hover:opacity-90 tracking-widest uppercase">ADD_NEW_PUBLIC_PROJ</button>
+                  </div>
+                  <div className="grid gap-4">
+                    {publicProjects.map((proj) => (
+                      <div key={proj.id} className="border border-outline/10 p-4 flex justify-between items-start bg-background/50 hover:border-outline/30 transition-all group">
+                        <div className="max-w-md">
+                          <h3 className="font-bold text-sm">{proj.name}</h3>
+                          <p className="text-[10px] opacity-50 truncate">{proj.description}</p>
+                        </div>
+                        <div className="flex space-x-3">
+                          <button onClick={() => setEditItem(proj)} className="text-[10px] opacity-30 group-hover:opacity-100 hover:text-primary transition-all underline">EDIT</button>
+                          <button onClick={() => handleDelete('public_projects', proj.id)} className="text-[10px] text-red-500 opacity-30 group-hover:opacity-100 transition-all underline">DELETE</button>
+                        </div>
+                      </div>
+                    ))}
+                    {publicProjects.length === 0 && <p className="text-xs opacity-30 italic">No public projects found.</p>}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'blogs' && (
+                <div className="space-y-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-xl font-bold tracking-tight uppercase">Blogs_Manager</h2>
+                    <button onClick={() => setActiveTab('new_blogs')} className="text-[10px] bg-primary text-on-primary px-4 py-2 hover:opacity-90 tracking-widest uppercase">ADD_NEW_BLOG</button>
+                  </div>
+                  <div className="grid gap-4">
+                    {blogs.map((blog) => (
+                      <div key={blog.id} className="border border-outline/10 p-4 flex justify-between items-start bg-background/50 hover:border-outline/30 transition-all group">
+                        <div className="max-w-md">
+                          <h3 className="font-bold text-sm">{blog.title}</h3>
+                          <p className="text-[10px] opacity-50 truncate">{blog.date}</p>
+                        </div>
+                        <div className="flex space-x-3">
+                          <button onClick={() => setEditItem(blog)} className="text-[10px] opacity-30 group-hover:opacity-100 hover:text-primary transition-all underline">EDIT</button>
+                          <button onClick={() => handleDelete('blogs', blog.id)} className="text-[10px] text-red-500 opacity-30 group-hover:opacity-100 transition-all underline">DELETE</button>
+                        </div>
+                      </div>
+                    ))}
+                    {blogs.length === 0 && <p className="text-xs opacity-30 italic">No blog posts found.</p>}
+                  </div>
+                </div>
+              )}
+
               {activeTab === 'skills' && (
                 <div className="space-y-6">
                   <div className="flex justify-between items-center mb-4">
@@ -436,17 +609,26 @@ export default function Dashboard() {
 
               {activeTab === 'resume' && (
                 <div className="space-y-6">
-                  <div className="flex justify-between items-center mb-4">
+                  <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-4">
                     <h2 className="text-xl font-bold tracking-tight uppercase">Resume_Engine_v1.1</h2>
-                    <button
-                      onClick={handleGenerateResume}
-                      disabled={actionLoading}
-                      className="text-[10px] border border-primary text-primary px-4 py-2 hover:bg-primary hover:text-on-primary transition-all uppercase tracking-widest disabled:opacity-50"
-                    >
-                      Auto_Generate_From_DB.SH
-                    </button>
+                    <div className="flex flex-wrap gap-2">
+                      <button
+                        onClick={handleGenerateFromDB}
+                        disabled={actionLoading}
+                        className="text-[10px] border border-outline/30 text-foreground px-4 py-2 hover:bg-primary hover:text-on-primary transition-all uppercase tracking-widest disabled:opacity-50"
+                      >
+                        Generate from DB
+                      </button>
+                      <button
+                        onClick={handleSaveToDB}
+                        disabled={actionLoading}
+                        className="text-[10px] border border-outline/30 text-foreground px-4 py-2 hover:bg-primary hover:text-on-primary transition-all uppercase tracking-widest disabled:opacity-50"
+                      >
+                        Save to DB
+                      </button>
+                    </div>
                   </div>
-                  <p className="text-[10px] opacity-50 mb-4 tracking-wider uppercase">Latex source management with cloud storage sync. (Note: Compilation is currently optimized for one-page layout based on database records).</p>
+                  <p className="text-[10px] opacity-50 mb-4 tracking-wider uppercase">Latex source management with cloud storage sync. (Note: Compilation is optimized for one-page professional layout).</p>
                   <textarea
                     value={resumeContent}
                     onChange={(e) => setResumeContent(e.target.value)}
@@ -459,7 +641,7 @@ export default function Dashboard() {
                       disabled={actionLoading}
                       className="bg-primary text-on-primary px-10 py-4 text-[10px] tracking-[0.2em] hover:opacity-90 transition-all uppercase font-bold disabled:opacity-50"
                     >
-                      Compile & Save to Cloud
+                      Compile & Update Resume.pdf
                     </button>
                   </div>
                 </div>
