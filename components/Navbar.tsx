@@ -23,16 +23,16 @@ export default function Navbar() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="#projects" className="text-sm font-mono hover:text-primary transition-colors flex items-center">
+            <Link href="/#projects" className="text-sm font-mono hover:text-primary transition-colors flex items-center">
               <span className="mr-1 text-[10px] text-primary">01.</span> PROJECTS
             </Link>
-            <Link href="#experience" className="text-sm font-mono hover:text-primary transition-colors flex items-center">
+            <Link href="/#experience" className="text-sm font-mono hover:text-primary transition-colors flex items-center">
               <span className="mr-1 text-[10px] text-primary">02.</span> EXPERIENCE
             </Link>
-            <Link href="#skills" className="text-sm font-mono hover:text-primary transition-colors flex items-center">
+            <Link href="/#skills" className="text-sm font-mono hover:text-primary transition-colors flex items-center">
               <span className="mr-1 text-[10px] text-primary">03.</span> SKILLS
             </Link>
-            <Link href="#tools" className="text-sm font-mono hover:text-primary transition-colors flex items-center">
+            <Link href="/#tools" className="text-sm font-mono hover:text-primary transition-colors flex items-center">
               <span className="mr-1 text-[10px] text-primary">04.</span> TOOLS
             </Link>
             <Link
@@ -63,16 +63,16 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden bg-surface border-b border-outline/20 px-4 pt-2 pb-6 flex flex-col space-y-4">
-          <Link href="#projects" onClick={() => setIsOpen(false)} className="text-sm font-mono py-2 border-b border-outline/10">
+          <Link href="/#projects" onClick={() => setIsOpen(false)} className="text-sm font-mono py-2 border-b border-outline/10">
             [01] PROJECTS
           </Link>
-          <Link href="#experience" onClick={() => setIsOpen(false)} className="text-sm font-mono py-2 border-b border-outline/10">
+          <Link href="/#experience" onClick={() => setIsOpen(false)} className="text-sm font-mono py-2 border-b border-outline/10">
             [02] EXPERIENCE
           </Link>
-          <Link href="#skills" onClick={() => setIsOpen(false)} className="text-sm font-mono py-2 border-b border-outline/10">
+          <Link href="/#skills" onClick={() => setIsOpen(false)} className="text-sm font-mono py-2 border-b border-outline/10">
             [03] SKILLS
           </Link>
-          <Link href="#tools" onClick={() => setIsOpen(false)} className="text-sm font-mono py-2 border-b border-outline/10">
+          <Link href="/#tools" onClick={() => setIsOpen(false)} className="text-sm font-mono py-2 border-b border-outline/10">
             [04] TOOLS
           </Link>
           <Link

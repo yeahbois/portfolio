@@ -3,6 +3,7 @@
 import { useEffect, useState, use } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import ImageCarousel from '@/components/ImageCarousel'
 
 interface PublicProject {
   name: string;
@@ -60,13 +61,7 @@ export default function ProjectDetail({ params }: { params: Promise<{ projectId:
 
         <div className="space-y-12">
           {project.images && project.images.length > 0 && (
-            <div className="grid grid-cols-1 gap-4">
-              {project.images.map((img: string, idx: number) => (
-                <div key={idx} className="ascii-border p-2 bg-surface/30">
-                  <img src={img} alt={`${project.name} ${idx + 1}`} className="w-full grayscale hover:grayscale-0 transition-all duration-700" />
-                </div>
-              ))}
-            </div>
+            <ImageCarousel images={project.images} alt={project.name} />
           )}
 
           <section className="ascii-border p-8 bg-surface/20">
