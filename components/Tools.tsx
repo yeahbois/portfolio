@@ -15,6 +15,20 @@ export default function Tools() {
       description: 'Centralized control center for project management and deployment metrics.',
       href: '/project/dashboard',
       tag: 'MANAGEMENT'
+    },
+    {
+      id: 'delfdalf',
+      name: 'DELF_DALF_STUDY_TOOL',
+      description: 'Comprehensive resources and tracking for French language proficiency exams.',
+      href: '/tools/delf-dalf',
+      tag: 'EDUCATION'
+    },
+    {
+      id: 'hskcsca',
+      name: 'HSK_CSCA_STUDY_TOOL',
+      description: 'Specialized preparation module for Chinese proficiency and CSCA assessments.',
+      href: '/tools/hsk-csca',
+      tag: 'EDUCATION'
     }
   ]
 

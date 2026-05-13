@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 export default function Hero() {
   const [text, setText] = useState('')
@@ -25,7 +26,7 @@ export default function Hero() {
           </p>
           <h1 className="text-4xl md:text-7xl font-black tracking-tighter leading-tight">
             Hi there! <br />
-            <span className="text-on-surface-variant">I'm Marcello Lienarta</span>
+            <span className="text-on-surface-variant">I&apos;m Marcello Lienarta</span>
           </h1>
         </div>
 
@@ -41,19 +42,19 @@ export default function Hero() {
         </div>
 
         <div className="flex flex-wrap gap-4 pt-4">
-          <a
-            href="#projects"
+          <Link
+            href="/projects/dashboard"
             className="px-8 py-3 bg-primary text-on-primary font-mono text-sm border border-primary hover:bg-transparent hover:text-primary transition-all flex items-center"
           >
             <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor" className="mr-2"><path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0-33-23.5-56.5T800-160H160Zm0-80h640v-400H160v400Zm140-40 56-56-103-104 103-104-56-56-160 160 160 160Zm180 0h80l100-320h-80L480-280Zm224 0 160-160-160-160-56 56 103 104-103 104 56 56Z"/></svg>
-            VIEW_PROJECTS
-          </a>
-          <a
-            href="#experience"
+            Public Projects
+          </Link>
+          <Link
+            href="/blogs/dashboard"
             className="px-8 py-3 border border-outline/30 text-on-surface-variant font-mono text-sm hover:border-primary hover:text-primary transition-all"
           >
-            EXECUTE_RECON
-          </a>
+            Blogs
+          </Link>
         </div>
       </div>
 
@@ -68,8 +69,10 @@ export default function Hero() {
           <span className="text-[10px] font-mono opacity-60 ml-2">bash --session --80x24</span>
         </div>
         <div className="font-mono text-xs md:text-sm space-y-1 opacity-90">
-          <p className="text-green-500">$ whoami</p>
-          <p>MARCELLO LIENARTA</p>
+          <Link href="/dashboard" className="block hover:bg-primary/10 transition-colors group">
+            <p className="text-green-500 group-hover:text-primary">$ whoami</p>
+            <p>MARCELLO LIENARTA</p>
+          </Link>
           <p className="text-green-500">$ location</p>
           <p>jakarta, id_sea</p>
           <p className="text-green-500">$ status</p>

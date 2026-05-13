@@ -215,11 +215,11 @@ export default function Dashboard() {
 
       doc.setFont(FONT_REGULAR, 'normal');
       doc.setFontSize(10);
-      doc.text('Multipurpose Developer with 5 Years of Experience in WebDev, AI, Automation, etc.', 297, yPos, { align: 'center' });
+      doc.text('Multipurpose Developer With 5 years of experience in Web Development, AI, Automation, and Robotics', 297, yPos, { align: 'center' });
       yPos += 14;
 
       doc.setFontSize(9);
-      doc.text('marcellolienarta663@gmail.com | linkedin.com/in/marcellolienarta | celloportfolio.vercel.app | West Jakarta, Indonesia', 297, yPos, { align: 'center' });
+      doc.text('marcellolienarta663@gmail.com | linkedin.com/in/marcellolienarta | celloportfolio.vercel.app | Jakarta, Indonesia', 297, yPos, { align: 'center' });
       yPos += 20;
 
       const addSection = (title: string) => {
@@ -289,14 +289,30 @@ export default function Dashboard() {
       [...skills].sort((a,b) => (a.order_index||0)-(b.order_index||0)).forEach(skill => {
         doc.setFontSize(9);
         const cat = `${skill.category.replace(/_/g, ' ')}: `;
+        const items = skill.items.join(', ');
+
         doc.setFont(FONT_BOLD, 'bold');
         doc.text(cat, margin, yPos);
 
         doc.setFont(FONT_REGULAR, 'normal');
-        const items = skill.items.join(', ');
-        const lines = doc.splitTextToSize(items, 595 - 2 * margin - doc.getTextWidth(cat) - 5);
-        doc.text(lines, margin + doc.getTextWidth(cat) + 2, yPos, { charSpace: 0 });
-        yPos += Math.max(11, lines.length * 10.5);
+        const catWidth = doc.getTextWidth(cat);
+
+        const fullText = cat + items;
+        const lines = doc.splitTextToSize(fullText, 595 - 2 * margin);
+
+        lines.forEach((line: string, index: number) => {
+          if (index === 0) {
+            doc.setFont(FONT_BOLD, 'bold');
+            doc.text(cat, margin, yPos);
+            doc.setFont(FONT_REGULAR, 'normal');
+            doc.text(line.substring(cat.length), margin + catWidth, yPos);
+          } else {
+            doc.setFont(FONT_REGULAR, 'normal');
+            doc.text(line, margin, yPos);
+          }
+          yPos += 10.5;
+        });
+        yPos += 2;
       });
 
       const pdfDataUri = doc.output('datauristring');
@@ -453,7 +469,7 @@ export default function Dashboard() {
                   <>
                     <input name="name" defaultValue={editItem?.name} placeholder="Project Name" className="w-full p-2 bg-background border border-outline/20 focus:border-primary outline-none" required />
                     <input name="creator" defaultValue={editItem?.creator} placeholder="Creator" className="w-full p-2 bg-background border border-outline/20 focus:border-primary outline-none" />
-                    <textarea name="images" defaultValue={editItem?.images?.join('\n')} placeholder="Image URLs (one per line)" className="w-full p-2 bg-background border border-outline/20 h-24 focus:border-primary outline-none" />
+                    <textarea name="images" defaultValue={editItem?.images?.join('\n')} placeholder="Image URLs (one per line, optional)" className="w-full p-2 bg-background border border-outline/20 h-24 focus:border-primary outline-none" />
                     <input name="description" defaultValue={editItem?.description} placeholder="Short Description" className="w-full p-2 bg-background border border-outline/20 focus:border-primary outline-none" />
                     <textarea name="details" defaultValue={editItem?.details} placeholder="Full Project Details" className="w-full p-2 bg-background border border-outline/20 h-32 focus:border-primary outline-none" />
                     <div className="flex gap-4">
@@ -465,7 +481,7 @@ export default function Dashboard() {
                 {activeTab.includes('blogs') && (
                   <>
                     <input name="title" defaultValue={editItem?.title} placeholder="Blog Title" className="w-full p-2 bg-background border border-outline/20 focus:border-primary outline-none" required />
-                    <textarea name="images" defaultValue={editItem?.images?.join('\n')} placeholder="Image URLs (one per line)" className="w-full p-2 bg-background border border-outline/20 h-24 focus:border-primary outline-none" />
+                    <textarea name="images" defaultValue={editItem?.images?.join('\n')} placeholder="Image URLs (one per line, optional)" className="w-full p-2 bg-background border border-outline/20 h-24 focus:border-primary outline-none" />
                     <textarea name="content" defaultValue={editItem?.content} placeholder="Blog Content (Markdown supported)" className="w-full p-2 bg-background border border-outline/20 h-64 focus:border-primary outline-none" />
                   </>
                 )}

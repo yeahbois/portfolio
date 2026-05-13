@@ -3,6 +3,7 @@
 import { useEffect, useState, use } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import ImageCarousel from '@/components/ImageCarousel'
 
 interface Blog {
   title: string;
@@ -52,12 +53,8 @@ export default function BlogDetail({ params }: { params: Promise<{ blogId: strin
           </header>
 
           {blog.images && blog.images.length > 0 && (
-            <div className="mb-12 space-y-4">
-              {blog.images.map((img: string, idx: number) => (
-                <div key={idx} className="ascii-border p-2 bg-surface/30">
-                  <img src={img} alt={`${blog.title} ${idx + 1}`} className="w-full grayscale hover:grayscale-0 transition-all duration-1000" />
-                </div>
-              ))}
+            <div className="mb-12">
+              <ImageCarousel images={blog.images} alt={blog.title} />
             </div>
           )}
 
