@@ -12,6 +12,26 @@ CREATE TABLE IF NOT EXISTS experience (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Education Table
+CREATE TABLE IF NOT EXISTS education (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  institution TEXT NOT NULL,
+  degree TEXT NOT NULL,
+  period TEXT NOT NULL,
+  location TEXT,
+  order_index INT DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Awards Table
+CREATE TABLE IF NOT EXISTS awards (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  title TEXT NOT NULL,
+  description TEXT,
+  order_index INT DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Projects Table
 CREATE TABLE IF NOT EXISTS projects (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -44,6 +64,8 @@ CREATE TABLE IF NOT EXISTS settings (
 ALTER TABLE experience ENABLE ROW LEVEL SECURITY;
 ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
 ALTER TABLE skills ENABLE ROW LEVEL SECURITY;
+ALTER TABLE education ENABLE ROW LEVEL SECURITY;
+ALTER TABLE awards ENABLE ROW LEVEL SECURITY;
 ALTER TABLE settings ENABLE ROW LEVEL SECURITY;
 
 -- Create Public Read Access Policies
@@ -58,6 +80,12 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow public read access on skills') THEN
         CREATE POLICY "Allow public read access on skills" ON skills FOR SELECT USING (true);
     END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow public read access on education') THEN
+        CREATE POLICY "Allow public read access on education" ON education FOR SELECT USING (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow public read access on awards') THEN
+        CREATE POLICY "Allow public read access on awards" ON awards FOR SELECT USING (true);
+    END IF;
     IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow public read access on settings') THEN
         CREATE POLICY "Allow public read access on settings" ON settings FOR SELECT USING (true);
     END IF;
@@ -71,6 +99,12 @@ BEGIN
     END IF;
     IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow auth admin to manage skills') THEN
         CREATE POLICY "Allow auth admin to manage skills" ON skills FOR ALL TO authenticated USING (true) WITH CHECK (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow auth admin to manage education') THEN
+        CREATE POLICY "Allow auth admin to manage education" ON education FOR ALL TO authenticated USING (true) WITH CHECK (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow auth admin to manage awards') THEN
+        CREATE POLICY "Allow auth admin to manage awards" ON awards FOR ALL TO authenticated USING (true) WITH CHECK (true);
     END IF;
     IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow auth admin to manage settings') THEN
         CREATE POLICY "Allow auth admin to manage settings" ON settings FOR ALL TO authenticated USING (true) WITH CHECK (true);
