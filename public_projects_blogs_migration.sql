@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS public_projects (
   status_percentage INT DEFAULT 0,
   status_message TEXT,
   order_index INT DEFAULT 0,
+  github_url TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -46,3 +47,13 @@ BEGIN
         CREATE POLICY "Allow auth admin to manage blogs" ON blogs FOR ALL TO authenticated USING (true) WITH CHECK (true);
     END IF;
 END $$;
+
+-- Wipe and Insert Lorem Ipsum
+TRUNCATE TABLE public_projects RESTART IDENTITY;
+TRUNCATE TABLE blogs RESTART IDENTITY;
+
+INSERT INTO public_projects (name, description, details, creator, status_percentage, status_message, order_index)
+VALUES ('Lorem Public Project', 'Lorem ipsum short description', 'Lorem ipsum long details about the public project.', 'Lorem Creator', 50, 'In Progress', 1);
+
+INSERT INTO blogs (title, content, order_index)
+VALUES ('Lorem Blog Post', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 1);

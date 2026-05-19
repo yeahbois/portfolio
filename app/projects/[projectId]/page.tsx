@@ -13,6 +13,7 @@ interface PublicProject {
   images?: string[];
   description: string;
   details?: string;
+  github_url?: string;
 }
 
 export default function ProjectDetail({ params }: { params: Promise<{ projectId: string }> }) {
@@ -56,6 +57,12 @@ export default function ProjectDetail({ params }: { params: Promise<{ projectId:
             <span>Creator: {project.creator}</span>
             <span>•</span>
             <span>Progress: {project.status_percentage}%</span>
+            {project.github_url && (
+              <>
+                <span>•</span>
+                <a href={project.github_url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">SOURCE_CODE.REPO</a>
+              </>
+            )}
           </div>
         </header>
 

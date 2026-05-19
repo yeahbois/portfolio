@@ -25,6 +25,12 @@ export async function POST(request: Request) {
   if (!(await isAuthenticated())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const supabase = createAdminClient()
   const body = await request.json()
+
+  // Ensure images is an array to avoid malformed array literal error
+  if (!body.images || (Array.isArray(body.images) && body.images.length === 0)) {
+    body.images = []
+  }
+
   const { data, error } = await supabase.from('blogs').insert([body]).select()
   if (error) return NextResponse.json({ error: error.message }, { status: 400 })
   return NextResponse.json(data)
@@ -35,6 +41,12 @@ export async function PUT(request: Request) {
   const supabase = createAdminClient()
   const body = await request.json()
   const { id, ...updateData } = body
+
+  // Ensure images is an array to avoid malformed array literal error
+  if (!updateData.images || (Array.isArray(updateData.images) && updateData.images.length === 0)) {
+    updateData.images = []
+  }
+
   const { data, error } = await supabase.from('blogs').update(updateData).eq('id', id).select()
   if (error) return NextResponse.json({ error: error.message }, { status: 400 })
   return NextResponse.json(data)

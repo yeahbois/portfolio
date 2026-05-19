@@ -77,27 +77,22 @@ BEGIN
     END IF;
 END $$;
 
+-- Wipe existing data
+TRUNCATE TABLE experience RESTART IDENTITY;
+TRUNCATE TABLE projects RESTART IDENTITY;
+TRUNCATE TABLE skills RESTART IDENTITY;
+
 -- Insert Initial Data (Experience)
 INSERT INTO experience (company, role, period, location, points, order_index) VALUES
-('Existential Robotics Lab', 'Research Assistant', 'Nov 2025 – Present', 'San Diego, United States', ARRAY['Integrated onboard camera streams via a ROS2–Unity bridge for real-time quadrotor perception.', 'Processed motor thrust signals through a filtered pipeline for smooth state interpolation and stable flight control.'], 1),
-('Triton Robotics', 'Autonomy', 'Aug 2025 – Present', 'San Diego, United States', ARRAY['Optimized a Kalman Filter pipeline achieving an average converged error of 4 × 10−3 m during jerky, abrupt movements for robust multi-panel center estimation.', 'Integrated ROS 2 for perception, ManiSkill for simulation, and FilterPy for probabilistic filtering.'], 2),
-('Algoverse', 'Researcher', 'Jul 2025 – Present', 'Remote', ARRAY['Conducted research on high-norm activations in Diffusion Transformers using PyTorch, analyzing activation distributions across Flux-Schnell, PixArt-σ, and other architectures.', 'Performed ablation experiments to evaluate the generative and semantic impact of removing high-norm activations.', 'Accepted to XAI4Science at AAAI 2026.'], 3),
-('Ruangguru', 'Software Engineering Intern', 'Jun 2025 – Aug 2025', 'Jakarta, Indonesia', ARRAY['Developed interactive animations for learning Data Structure and Algorithms using React.js and GSAP.', 'Built a Node.js CLI tool that syncs animation code with voiceovers using ElevenLabs and Gemini API, automating alignment and boosting efficiency by 90%.', 'Integrated Firebase for user authentication and progress tracking.'], 4)
-ON CONFLICT DO NOTHING;
+('Lorem Ipsum Corp', 'Lorem Ipsum Developer', 'Jan 2020 – Present', 'Remote', ARRAY['Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'], 1);
 
 -- Insert Initial Data (Projects)
 INSERT INTO projects (title, description, tech, href, points, order_index) VALUES
-('memARy', 'AR glasses that remember everything', ARRAY['Snap AR', 'ChromaDB', 'FastAPI', 'Lens Studio', 'React.js'], 'https://github.com', ARRAY['Engineered a streaming system that transmits frames from Snap Spectacles to the backend through websockets.', 'Integrated Reka’s Llama Vision Model for scene summarization and ChromaDB for vector-based memory retrieval, forming a complete cognitive pipeline.'], 1),
-('Vanilla Navigation VLA', 'ROS2, Gazebo, YOLO, PyDantic, Ollama, Twist Mux', ARRAY['ROS2', 'Gazebo', 'YOLO', 'PyDantic', 'Ollama', 'Twist Mux'], 'https://github.com', ARRAY['Implemented a Vision–Language–Action (VLA) pipeline using YOLO and a local LLaMA 3.2 Vision model to convert natural language goals into navigation commands.', 'Developed modular ROS2 nodes for teleoperation, twist multiplexing, safety stop, and mLLM inference under GPU constraints.'], 2),
-('Computer Vision Controlled Robot Arm', 'Mediapipe, RaspberryPi 5', ARRAY['Mediapipe', 'RaspberryPi 5'], 'https://github.com', ARRAY['Developed a computer vision-based control system using MediaPipe for real-time hand and arm tracking.', 'Built and programmed a robotic arm, interfaced via PCA9685 servo driver and controlled through Raspberry Pi.'], 3)
-ON CONFLICT DO NOTHING;
+('Lorem Project', 'Lorem ipsum dolor sit amet description', ARRAY['Lorem', 'Ipsum'], 'https://github.com', ARRAY['Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'], 1);
 
 -- Insert Initial Data (Skills)
 INSERT INTO skills (category, items, order_index) VALUES
-('CORE_LANGUAGES', ARRAY['Typescript', 'Rust', 'Go', 'Python', 'C++', 'SQL'], 1),
-('FRAMEWORKS_SYSTEMS', ARRAY['Next.js', 'React', 'Node.js', 'Docker', 'Kubernetes', 'PostgreSQL'], 2),
-('SPECIALIZATIONS', ARRAY['System Architecture', 'Security Engineering', 'Cloud Infrastructure', 'UI/UX Engineering'], 3)
-ON CONFLICT DO NOTHING;
+('LOREM_SKILLS', ARRAY['Lorem', 'Ipsum', 'Dolor', 'Sit', 'Amet'], 1);
 
 -- Insert Initial Resume LaTeX
 INSERT INTO settings (key, value) VALUES ('resume_latex', '\\documentclass[9pt,a4paper]{article}
@@ -125,7 +120,7 @@ INSERT INTO settings (key, value) VALUES ('resume_latex', '\\documentclass[9pt,a
 \\begin{center}
     {\\huge \\textbf{Marcello Lienarta}} \\\\
     \\vspace{1pt}
-    {Multipurpose developer with +- 5 years of experience with web dev, ai, automation etc.} \\\\
+    {Multipurpose Developer With 5 years of experience in Web Development, AI, Automation, and Robotics} \\\\
     \\vspace{2pt}
     \\small \\href{mailto:marcellolienarta663@gmail.com}{marcellolienarta663@gmail.com} $|$ \\href{https://linkedin.com/in/marcellolienarta}{linkedin.com/in/marcellolienarta} $|$ \\href{https://celloportfolio.vercel.app}{celloportfolio.vercel.app} $|$ Jakarta, Indonesia
 \\end{center}
@@ -133,5 +128,27 @@ INSERT INTO settings (key, value) VALUES ('resume_latex', '\\documentclass[9pt,a
 \\section*{Experience}
 \\hrule
 \\vspace{2pt}
-% Data will be injected or edited here
+\\textbf{Lorem Ipsum Corp} \\hfill Jan 2020 -- Present \\\\
+\\textit{Lorem Ipsum Developer} \\hfill Remote
+\\begin{itemize}
+    \\item Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    \\item Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+\\end{itemize}
+\\vspace{4pt}
+
+\\section*{Projects}
+\\hrule
+\\vspace{2pt}
+\\textbf{Lorem Project} $|$ \\textit{Lorem, Ipsum} \\hfill \\href{https://github.com}{Link}
+\\begin{itemize}
+    \\item Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    \\item Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+\\end{itemize}
+\\vspace{4pt}
+
+\\section*{Skills}
+\\hrule
+\\vspace{2pt}
+\\textbf{LOREM SKILLS}: Lorem, Ipsum, Dolor, Sit, Amet
+
 \\end{document}') ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
