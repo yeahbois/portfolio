@@ -1,9 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { generateResumeLatex } from '@/utils/resume-latex'
 import jsPDF from 'jspdf'
+import html2canvas from 'html2canvas'
+import { ResumePreview } from '@/components/resume/ResumePreview'
 
 interface Experience {
   id: string;
@@ -35,6 +37,7 @@ interface PublicProject {
   status_percentage: number;
   status_message: string;
   order_index: number;
+  github_url?: string;
 }
 
 interface Blog {
@@ -66,6 +69,7 @@ export default function Dashboard() {
   const [actionLoading, setActionLoading] = useState(false)
   const [progress, setProgress] = useState(0)
   const [statusText, setStatusText] = useState('')
+  const resumeRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
 
   useEffect(() => {
@@ -191,131 +195,38 @@ export default function Dashboard() {
   const handleCompileAndDeploy = async () => {
     setActionLoading(true);
     setProgress(0);
-    setStatusText('FETCHING_SAVED_LATEX...');
+    setStatusText('INITIATING_HIGH_PRECISION_RENDER...');
 
     try {
+      if (!resumeRef.current) throw new Error("Render target not found");
+
+      await simulateProgress(20, 400);
+      setStatusText('RENDERING_HTML_TO_CANVAS...');
+
+      const canvas = await html2canvas(resumeRef.current, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: '#ffffff'
+      });
+
+      const imgData = canvas.toDataURL('image/jpeg', 1.0);
+      const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      });
+
+      const imgProps = doc.getImageProperties(imgData);
+      const pdfWidth = doc.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+      doc.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+      const pdfDataUri = doc.output('datauristring');
+
       const resumeRes = await fetch('/api/resume');
       const resumeData = await resumeRes.json();
       const contentToCompile = resumeData.content;
-
-      await simulateProgress(20, 400);
-      setStatusText('COMPILING_PROFESSIONAL_RESUME...');
-
-      const doc = new jsPDF({ format: 'a4', unit: 'pt' });
-      const FONT_REGULAR = 'times';
-      const FONT_BOLD = 'times';
-
-      const margin = 30;
-      let yPos = margin + 20;
-
-      doc.setFont(FONT_BOLD, 'bold');
-      doc.setFontSize(20);
-      doc.text('Marcello Lienarta', 297, yPos, { align: 'center' });
-      yPos += 20;
-
-      doc.setFont(FONT_REGULAR, 'normal');
-      doc.setFontSize(10);
-      doc.text('Multipurpose Developer With 5 years of experience in Web Development, AI, Automation, and Robotics', 297, yPos, { align: 'center' });
-      yPos += 14;
-
-      doc.setFontSize(9);
-      doc.text('marcellolienarta663@gmail.com | linkedin.com/in/marcellolienarta | celloportfolio.vercel.app | Jakarta, Indonesia', 297, yPos, { align: 'center' });
-      yPos += 20;
-
-      const addSection = (title: string) => {
-        doc.setFont(FONT_BOLD, 'bold');
-        doc.setFontSize(11);
-        doc.text(title.toUpperCase(), margin, yPos);
-        yPos += 3;
-        doc.setLineWidth(0.5);
-        doc.line(margin, yPos, 595 - margin, yPos);
-        yPos += 12;
-      };
-
-      addSection('Experience');
-      [...experience].sort((a,b) => (a.order_index||0)-(b.order_index||0)).forEach(exp => {
-        doc.setFontSize(10);
-        doc.setFont(FONT_BOLD, 'bold');
-        doc.text(exp.company, margin, yPos);
-        doc.setFont(FONT_REGULAR, 'normal');
-        doc.text(exp.period, 595 - margin, yPos, { align: 'right' });
-        yPos += 11;
-
-        doc.setFont(FONT_REGULAR, 'italic');
-        doc.text(exp.role, margin, yPos);
-        if (exp.location) {
-            doc.text(exp.location, 595 - margin, yPos, { align: 'right' });
-        }
-        yPos += 11;
-
-        doc.setFont(FONT_REGULAR, 'normal');
-        doc.setFontSize(9);
-        exp.points?.forEach((p: string) => {
-          const lines = doc.splitTextToSize(`• ${p}`, 595 - 2 * margin - 15);
-          doc.text(lines, margin + 10, yPos, { charSpace: 0 });
-          yPos += lines.length * 10.5;
-        });
-        yPos += 4;
-      });
-
-      yPos += 4;
-      addSection('Projects');
-      [...projects].sort((a,b) => (a.order_index||0)-(b.order_index||0)).forEach(proj => {
-        doc.setFontSize(10);
-        doc.setFont(FONT_BOLD, 'bold');
-        doc.text(proj.title, margin, yPos);
-
-        const techText = ` | ${proj.tech.join(', ')}`;
-        doc.setFont(FONT_REGULAR, 'normal');
-        doc.setFontSize(9);
-        doc.text(techText, margin + doc.getTextWidth(proj.title), yPos);
-
-        if (proj.href && proj.href !== '#') {
-             doc.text('Link', 595 - margin, yPos, { align: 'right' });
-        }
-
-        yPos += 11;
-        doc.setFontSize(9);
-        proj.points?.forEach((p: string) => {
-          const lines = doc.splitTextToSize(`• ${p}`, 595 - 2 * margin - 15);
-          doc.text(lines, margin + 10, yPos, { charSpace: 0 });
-          yPos += lines.length * 10.5;
-        });
-        yPos += 4;
-      });
-
-      yPos += 4;
-      addSection('Skills');
-      [...skills].sort((a,b) => (a.order_index||0)-(b.order_index||0)).forEach(skill => {
-        doc.setFontSize(9);
-        const cat = `${skill.category.replace(/_/g, ' ')}: `;
-        const items = skill.items.join(', ');
-
-        doc.setFont(FONT_BOLD, 'bold');
-        doc.text(cat, margin, yPos);
-
-        doc.setFont(FONT_REGULAR, 'normal');
-        const catWidth = doc.getTextWidth(cat);
-
-        const fullText = cat + items;
-        const lines = doc.splitTextToSize(fullText, 595 - 2 * margin);
-
-        lines.forEach((line: string, index: number) => {
-          if (index === 0) {
-            doc.setFont(FONT_BOLD, 'bold');
-            doc.text(cat, margin, yPos);
-            doc.setFont(FONT_REGULAR, 'normal');
-            doc.text(line.substring(cat.length), margin + catWidth, yPos);
-          } else {
-            doc.setFont(FONT_REGULAR, 'normal');
-            doc.text(line, margin, yPos);
-          }
-          yPos += 10.5;
-        });
-        yPos += 2;
-      });
-
-      const pdfDataUri = doc.output('datauristring');
 
       await simulateProgress(70, 800);
       setStatusText('UPLOADING_TO_CLOUD_STORAGE...');
@@ -421,9 +332,10 @@ export default function Dashboard() {
       <div className="max-w-6xl mx-auto">
         <header className="flex justify-between items-center mb-12 border-b border-outline/20 pb-6">
           <h1 className="text-2xl font-bold tracking-tighter">PORTFOLIO_DASHBOARD_v1.1</h1>
-          <button onClick={() => {
-            document.cookie = 'admin_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+          <button onClick={async () => {
+            await fetch('/api/auth/logout', { method: 'POST' })
             router.push('/')
+            router.refresh()
           }} className="text-[10px] border border-outline/20 px-4 py-2 hover:bg-primary hover:text-on-primary transition-all">
             LOGOUT.SYS
           </button>
@@ -469,6 +381,7 @@ export default function Dashboard() {
                   <>
                     <input name="name" defaultValue={editItem?.name} placeholder="Project Name" className="w-full p-2 bg-background border border-outline/20 focus:border-primary outline-none" required />
                     <input name="creator" defaultValue={editItem?.creator} placeholder="Creator" className="w-full p-2 bg-background border border-outline/20 focus:border-primary outline-none" />
+                    <input name="github_url" defaultValue={editItem?.github_url} placeholder="GitHub Repo URL (Optional)" className="w-full p-2 bg-background border border-outline/20 focus:border-primary outline-none" />
                     <textarea name="images" defaultValue={editItem?.images?.join('\n')} placeholder="Image URLs (one per line, optional)" className="w-full p-2 bg-background border border-outline/20 h-24 focus:border-primary outline-none" />
                     <input name="description" defaultValue={editItem?.description} placeholder="Short Description" className="w-full p-2 bg-background border border-outline/20 focus:border-primary outline-none" />
                     <textarea name="details" defaultValue={editItem?.details} placeholder="Full Project Details" className="w-full p-2 bg-background border border-outline/20 h-32 focus:border-primary outline-none" />
@@ -625,6 +538,9 @@ export default function Dashboard() {
 
               {activeTab === 'resume' && (
                 <div className="space-y-6">
+          <div style={{ position: 'absolute', left: '-9999px', top: 0 }}>
+            <ResumePreview ref={resumeRef} data={{ experience, projects, skills }} />
+          </div>
                   <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-4">
                     <h2 className="text-xl font-bold tracking-tight uppercase">Resume_Engine_v1.1</h2>
                     <div className="flex flex-wrap gap-2">
