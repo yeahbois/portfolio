@@ -3,8 +3,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { generateResumeLatex } from '@/utils/resume-latex'
-import jsPDF from 'jspdf'
-import html2canvas from 'html2canvas'
 import { ResumePreview } from '@/components/resume/ResumePreview'
 
 interface Experience {
@@ -87,6 +85,7 @@ export default function Dashboard() {
   const [actionLoading, setActionLoading] = useState(false)
   const [progress, setProgress] = useState(0)
   const [statusText, setStatusText] = useState('')
+  const [compileErrorLog, setCompileErrorLog] = useState<string | null>(null)
   const resumeRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
 
@@ -225,60 +224,19 @@ export default function Dashboard() {
   const handleCompileAndDeploy = async () => {
     setActionLoading(true);
     setProgress(0);
-    setStatusText('INITIATING_HIGH_PRECISION_RENDER...');
+    setCompileErrorLog(null);
+    setStatusText('INITIATING_SERVER_SIDE_COMPILE...');
 
     try {
-      if (!resumeRef.current) throw new Error("Render target not found");
-
-      await simulateProgress(20, 400);
-      setStatusText('RENDERING_HTML_TO_PDF...');
-
-      const doc = new jsPDF({
-        orientation: 'portrait',
-        unit: 'pt', // Use points for better precision with links
-        format: 'letter'
-      });
-
-      // Use doc.html for high-fidelity rendering with clickable links
-      await doc.html(resumeRef.current, {
-        callback: async (doc) => {
-          const pdfDataUri = doc.output('datauristring');
-          await uploadResume(pdfDataUri);
-        },
-        x: 0,
-        y: 0,
-        width: 612, // 8.5in * 72pt
-        windowWidth: 816, // 8.5in * 96dpi
-        autoPaging: 'text',
-        html2canvas: {
-          scale: 1, // Higher scale can sometimes break links
-          useCORS: true,
-          logging: false,
-          letterRendering: true
-        }
-      });
-
-    } catch (err: any) {
-      alert(`Compilation Error: ${err.message}`);
-      setActionLoading(false);
-    }
-  };
-
-  const uploadResume = async (pdfDataUri: string) => {
-    try {
-      const resumeRes = await fetch('/api/resume');
-      const resumeData = await resumeRes.json();
-      const contentToCompile = resumeData.content;
-
-      await simulateProgress(70, 800);
-      setStatusText('UPLOADING_TO_CLOUD_STORAGE...');
+      await simulateProgress(20, 200);
+      setStatusText('COMPILING_LATEX_ON_SERVER...');
 
       const res = await fetch('/api/resume', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          content: contentToCompile,
-          pdfBase64: pdfDataUri
+          content: resumeContent,
+          compile: true
         }),
       });
 
@@ -287,11 +245,16 @@ export default function Dashboard() {
         setStatusText('RESUME_PDF_UPDATED');
         setTimeout(() => { setActionLoading(false); setProgress(0); setStatusText(''); }, 1500);
       } else {
-        const err = await res.json();
-        throw new Error(err.error);
+        const data = await res.json();
+        if (res.status === 422) {
+          setCompileErrorLog(data.log || 'Unknown LaTeX compilation error.');
+        } else {
+          alert(`Compilation Execution Error: ${data.error || 'Server error'}`);
+        }
+        setActionLoading(false);
       }
     } catch (err: any) {
-      alert(`Upload Error: ${err.message}`);
+      alert(`Network Error: ${err.message}`);
       setActionLoading(false);
     }
   };
@@ -366,6 +329,30 @@ export default function Dashboard() {
             </div>
             <div className="text-[9px] opacity-40 text-center uppercase tracking-tighter">
               Do not close the terminal until process completes
+            </div>
+          </div>
+        </div>
+      )}
+
+      {compileErrorLog && (
+        <div className="fixed inset-0 z-[100] bg-background/90 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="max-w-4xl w-full ascii-border bg-surface p-6 flex flex-col max-h-[85vh]">
+            <div className="flex justify-between items-center border-b border-red-500/30 pb-3 mb-4">
+              <span className="text-red-500 font-bold tracking-widest text-sm uppercase">
+                SYSTEM_ERROR: LATEX_COMPILATION_FAILED.LOG
+              </span>
+              <button 
+                onClick={() => setCompileErrorLog(null)}
+                className="text-xs border border-outline/20 px-3 py-1 hover:bg-red-500 hover:text-white transition-all font-bold uppercase tracking-wider"
+              >
+                [CLOSE.EXE]
+              </button>
+            </div>
+            <div className="flex-1 overflow-auto bg-black/40 border border-outline/10 p-4 font-mono text-[10px] text-red-400/80 leading-relaxed whitespace-pre-wrap select-text">
+              {compileErrorLog}
+            </div>
+            <div className="pt-4 text-center text-[9px] opacity-40 uppercase tracking-tighter">
+              Fix the LaTeX syntax errors shown in the log above and try again.
             </div>
           </div>
         </div>

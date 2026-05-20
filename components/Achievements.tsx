@@ -17,7 +17,7 @@ export default async function Achievements() {
   return (
     <section id="achievements" className="py-20 px-4 max-w-7xl mx-auto w-full">
       <div className="flex items-center space-x-4 mb-12">
-        <h2 className="text-2xl md:text-4xl font-black tracking-tight">06. ACHIEVEMENTS</h2>
+        <h2 className="text-2xl md:text-4xl font-black tracking-tight">05. ACHIEVEMENTS</h2>
         <div className="h-[1px] flex-1 bg-outline/20"></div>
       </div>
 

@@ -37,11 +37,6 @@ export default async function Skills() {
           </div>
         ))}
       </div>
-
-      <div className="mt-20 p-8 border border-outline/20 bg-surface-variant/5 text-center">
-        <p className="font-mono text-[10px] text-primary font-bold uppercase tracking-[0.5em] mb-4">Current_Focus</p>
-        <p className="text-xl md:text-2xl font-bold tracking-tight">AI-Driven Infrastructure & Quantum-Safe Encryption</p>
-      </div>
     </section>
   )
 }

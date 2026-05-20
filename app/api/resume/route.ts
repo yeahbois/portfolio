@@ -52,15 +52,56 @@ export async function GET() {
 
 export async function POST(request: Request) {
   if (!(await isAuthenticated())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  const { content, pdfBase64 } = await request.json()
+  const { content, pdfBase64, compile } = await request.json()
   const supabase = createAdminClient()
 
   // 1. Save LaTeX to Database
   const { error: dbError } = await supabase.from('settings').upsert({ key: 'resume_latex', value: content })
   if (dbError) return NextResponse.json({ error: dbError.message }, { status: 400 })
 
-  // 2. If PDF data is provided, upload to Supabase Storage
-  if (pdfBase64) {
+  // 2. If compile is requested, run server-side LaTeX compilation
+  if (compile) {
+    try {
+      const formData = new FormData()
+      formData.append('filename[]', 'document.tex')
+      formData.append('filecontents[]', content)
+      formData.append('engine', 'pdflatex')
+      formData.append('return', 'pdf')
+
+      const compileRes = await fetch('https://texlive.net/cgi-bin/latexcgi', {
+        method: 'POST',
+        body: formData
+      })
+
+      if (!compileRes.ok) {
+        const errorText = await compileRes.text()
+        return NextResponse.json({ error: 'LaTeX compilation service error', log: errorText }, { status: 500 })
+      }
+
+      const contentType = compileRes.headers.get('content-type') || ''
+      if (!contentType.includes('application/pdf')) {
+        const errorLog = await compileRes.text()
+        return NextResponse.json({ error: 'LaTeX Compilation Failed', log: errorLog }, { status: 422 })
+      }
+
+      const arrayBuffer = await compileRes.arrayBuffer()
+      const buffer = Buffer.from(arrayBuffer)
+
+      const { error: uploadError } = await supabase.storage
+        .from('resume')
+        .upload('resume.pdf', buffer, {
+          contentType: 'application/pdf',
+          upsert: true
+        })
+
+      if (uploadError) {
+        return NextResponse.json({ error: 'Storage upload failed: ' + uploadError.message }, { status: 500 })
+      }
+    } catch (err: any) {
+      return NextResponse.json({ error: 'LaTeX compilation execution error: ' + err.message }, { status: 500 })
+    }
+  } else if (pdfBase64) {
+    // 3. Fallback: If PDF data is provided via base64, upload to Supabase Storage directly
     try {
       const buffer = Buffer.from(pdfBase64.split(',')[1], 'base64')
       const { error: uploadError } = await supabase.storage
@@ -80,3 +121,4 @@ export async function POST(request: Request) {
 
   return NextResponse.json({ success: true })
 }
+
