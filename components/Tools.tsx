@@ -10,6 +10,13 @@ export default function Tools() {
       tag: 'UTILITY'
     },
     {
+      id: 'shortener',
+      name: 'URL_SHORTENER_v1.0',
+      description: 'Internal redirection service for creating and managing high-efficiency short links.',
+      href: '/shortener/create',
+      tag: 'UTILITY'
+    },
+    {
       id: 'projectdashboard',
       name: 'PROJECT_DASHBOARD_v1.0',
       description: 'Centralized control center for project management and deployment metrics.',
