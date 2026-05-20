@@ -17,28 +17,24 @@ export function generateResumeLatex(data: {
   experience: any[];
   projects: any[];
   skills: any[];
+  certificates: any[];
+  achievements: any[];
 }) {
-  const { experience, projects, skills } = data;
+  const { experience, projects, skills, certificates, achievements } = data;
 
-  const sortedExp = [...experience].sort((a, b) => (a.order_index || 0) - (b.order_index || 0));
-  const sortedProj = [...projects].sort((a, b) => (a.order_index || 0) - (b.order_index || 0));
-  const sortedSkills = [...skills].sort((a, b) => (a.order_index || 0) - (b.order_index || 0));
+  const sortedExp = [...(experience || [])].sort((a, b) => (a.order_index || 0) - (b.order_index || 0));
+  const sortedProj = [...(projects || [])].sort((a, b) => (a.order_index || 0) - (b.order_index || 0));
+  const sortedSkills = [...(skills || [])].sort((a, b) => (a.order_index || 0) - (b.order_index || 0));
+  const sortedCert = [...(certificates || [])].sort((a, b) => (a.order_index || 0) - (b.order_index || 0));
+  const sortedAch = [...(achievements || [])].sort((a, b) => (a.order_index || 0) - (b.order_index || 0));
 
-  return `\\documentclass[9pt,a4paper]{article}
+  return `\\documentclass[9pt,letterpaper]{article}
 \\usepackage[utf8]{inputenc}
 \\usepackage[margin=0.4in]{geometry}
-\\usepackage{hyperref}
+\\usepackage[hidelinks]{hyperref}
 \\usepackage{xcolor}
 \\usepackage{enumitem}
 \\usepackage{titlesec}
-
-\\hypersetup{
-    colorlinks=true,
-    linkcolor=black,
-    filecolor=magenta,
-    urlcolor=blue,
-    pdftitle={Marcello Lienarta - Resume},
-}
 
 \\pagestyle{empty}
 \\setlist[itemize]{noitemsep, topsep=0pt, leftmargin=1.2em, partopsep=0pt, parsep=0pt}
@@ -54,6 +50,7 @@ export function generateResumeLatex(data: {
     \\small \\href{mailto:marcellolienarta663@gmail.com}{marcellolienarta663@gmail.com} $|$ \\href{https://linkedin.com/in/marcellolienarta}{linkedin.com/in/marcellolienarta} $|$ \\href{https://celloportfolio.vercel.app}{celloportfolio.vercel.app} $|$ Jakarta, Indonesia
 \\end{center}
 
+${sortedExp.length > 0 ? `
 \\section*{Experience}
 \\hrule
 \\vspace{2pt}
@@ -63,8 +60,9 @@ ${sortedExp.map(exp => `
 \\begin{itemize}
 ${exp.points.map((p: string) => `    \\item ${escapeLatex(p)}`).join('\n')}
 \\end{itemize}
-\\vspace{4pt}`).join('')}
+\\vspace{4pt}`).join('')}` : ''}
 
+${sortedProj.length > 0 ? `
 \\section*{Projects}
 \\hrule
 \\vspace{2pt}
@@ -73,13 +71,32 @@ ${sortedProj.map(proj => `
 \\begin{itemize}
 ${proj.points.map((p: string) => `    \\item ${escapeLatex(p)}`).join('\n')}
 \\end{itemize}
-\\vspace{4pt}`).join('')}
+\\vspace{4pt}`).join('')}` : ''}
 
+${sortedCert.length > 0 ? `
+\\section*{Certificates}
+\\hrule
+\\vspace{2pt}
+${sortedCert.map(cert => `
+\\textbf{${escapeLatex(cert.institution)}} \\hfill ${escapeLatex(cert.period)} \\\\
+\\textit{${escapeLatex(cert.degree)}} \\hfill ${escapeLatex(cert.location || '')} \\vspace{2pt} \\\\
+`).join('')}` : ''}
+
+${sortedAch.length > 0 ? `
+\\section*{Achievements}
+\\hrule
+\\vspace{2pt}
+${sortedAch.map(ach => `
+\\textbf{${escapeLatex(ach.title)}}: ${escapeLatex(ach.description)} \\\\
+`).join('')}` : ''}
+
+${sortedSkills.length > 0 ? `
 \\section*{Skills}
 \\hrule
 \\vspace{2pt}
 ${sortedSkills.map(skill => `
 \\textbf{${escapeLatex(skill.category.replace(/_/g, ' '))}}: ${escapeLatex(skill.items.join(', '))}`).join(' \\\\ \n')}
+` : ''}
 
 \\end{document}`;
 }

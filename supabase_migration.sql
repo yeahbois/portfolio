@@ -12,8 +12,8 @@ CREATE TABLE IF NOT EXISTS experience (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Education Table
-CREATE TABLE IF NOT EXISTS education (
+-- Certificates Table (Refactored from Education)
+CREATE TABLE IF NOT EXISTS certificates (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   institution TEXT NOT NULL,
   degree TEXT NOT NULL,
@@ -23,8 +23,8 @@ CREATE TABLE IF NOT EXISTS education (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Awards Table
-CREATE TABLE IF NOT EXISTS awards (
+-- Achievements Table (Refactored from Awards)
+CREATE TABLE IF NOT EXISTS achievements (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   title TEXT NOT NULL,
   description TEXT,
@@ -86,15 +86,24 @@ CREATE TABLE IF NOT EXISTS blogs (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Shortener Table
+CREATE TABLE IF NOT EXISTS shortener (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  slug TEXT UNIQUE NOT NULL,
+  long_url TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Enable Row Level Security
 ALTER TABLE experience ENABLE ROW LEVEL SECURITY;
 ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
 ALTER TABLE skills ENABLE ROW LEVEL SECURITY;
-ALTER TABLE education ENABLE ROW LEVEL SECURITY;
-ALTER TABLE awards ENABLE ROW LEVEL SECURITY;
+ALTER TABLE certificates ENABLE ROW LEVEL SECURITY;
+ALTER TABLE achievements ENABLE ROW LEVEL SECURITY;
 ALTER TABLE settings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public_projects ENABLE ROW LEVEL SECURITY;
 ALTER TABLE blogs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE shortener ENABLE ROW LEVEL SECURITY;
 
 -- Create Public Read Access Policies
 DO $$
@@ -108,11 +117,11 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow public read access on skills') THEN
         CREATE POLICY "Allow public read access on skills" ON skills FOR SELECT USING (true);
     END IF;
-    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow public read access on education') THEN
-        CREATE POLICY "Allow public read access on education" ON education FOR SELECT USING (true);
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow public read access on certificates') THEN
+        CREATE POLICY "Allow public read access on certificates" ON certificates FOR SELECT USING (true);
     END IF;
-    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow public read access on awards') THEN
-        CREATE POLICY "Allow public read access on awards" ON awards FOR SELECT USING (true);
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow public read access on achievements') THEN
+        CREATE POLICY "Allow public read access on achievements" ON achievements FOR SELECT USING (true);
     END IF;
     IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow public read access on settings') THEN
         CREATE POLICY "Allow public read access on settings" ON settings FOR SELECT USING (true);
@@ -122,6 +131,9 @@ BEGIN
     END IF;
     IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow public read access on blogs') THEN
         CREATE POLICY "Allow public read access on blogs" ON blogs FOR SELECT USING (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow public read access on shortener') THEN
+        CREATE POLICY "Allow public read access on shortener" ON shortener FOR SELECT USING (true);
     END IF;
 
     -- Admin/Authenticated Access Policies (Allow all operations for authenticated users)
@@ -134,11 +146,11 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow auth admin to manage skills') THEN
         CREATE POLICY "Allow auth admin to manage skills" ON skills FOR ALL TO authenticated USING (true) WITH CHECK (true);
     END IF;
-    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow auth admin to manage education') THEN
-        CREATE POLICY "Allow auth admin to manage education" ON education FOR ALL TO authenticated USING (true) WITH CHECK (true);
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow auth admin to manage certificates') THEN
+        CREATE POLICY "Allow auth admin to manage certificates" ON certificates FOR ALL TO authenticated USING (true) WITH CHECK (true);
     END IF;
-    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow auth admin to manage awards') THEN
-        CREATE POLICY "Allow auth admin to manage awards" ON awards FOR ALL TO authenticated USING (true) WITH CHECK (true);
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow auth admin to manage achievements') THEN
+        CREATE POLICY "Allow auth admin to manage achievements" ON achievements FOR ALL TO authenticated USING (true) WITH CHECK (true);
     END IF;
     IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow auth admin to manage settings') THEN
         CREATE POLICY "Allow auth admin to manage settings" ON settings FOR ALL TO authenticated USING (true) WITH CHECK (true);
@@ -149,27 +161,31 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow auth admin to manage blogs') THEN
         CREATE POLICY "Allow auth admin to manage blogs" ON blogs FOR ALL TO authenticated USING (true) WITH CHECK (true);
     END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow auth admin to manage shortener') THEN
+        CREATE POLICY "Allow auth admin to manage shortener" ON shortener FOR ALL TO authenticated USING (true) WITH CHECK (true);
+    END IF;
 END $$;
 
 -- Wipe existing data
 TRUNCATE TABLE experience RESTART IDENTITY;
 TRUNCATE TABLE projects RESTART IDENTITY;
 TRUNCATE TABLE skills RESTART IDENTITY;
-TRUNCATE TABLE education RESTART IDENTITY;
-TRUNCATE TABLE awards RESTART IDENTITY;
+TRUNCATE TABLE certificates RESTART IDENTITY;
+TRUNCATE TABLE achievements RESTART IDENTITY;
 TRUNCATE TABLE public_projects RESTART IDENTITY;
 TRUNCATE TABLE blogs RESTART IDENTITY;
+TRUNCATE TABLE shortener RESTART IDENTITY;
 
 -- Insert Initial Data (Experience)
 INSERT INTO experience (company, role, period, location, points, order_index) VALUES
 ('Lorem Ipsum Corp', 'Lorem Ipsum Developer', 'Jan 2020 – Present', 'Remote', ARRAY['Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'], 1);
 
--- Insert Initial Data (Education)
-INSERT INTO education (institution, degree, period, location, order_index) VALUES
+-- Insert Initial Data (Certificates)
+INSERT INTO certificates (institution, degree, period, location, order_index) VALUES
 ('Lorem University', 'Bachelor of Science in Computer Science', '2016 – 2020', 'Lorem City', 1);
 
--- Insert Initial Data (Awards)
-INSERT INTO awards (title, description, order_index) VALUES
+-- Insert Initial Data (Achievements)
+INSERT INTO achievements (title, description, order_index) VALUES
 ('Lorem Excellence Award', 'Awarded for outstanding performance in lorem ipsum.', 1);
 
 -- Insert Initial Data (Projects)
