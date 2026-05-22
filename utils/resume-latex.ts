@@ -39,6 +39,7 @@ export function generateResumeLatex(data: {
 \\pagestyle{empty}
 \\setlist[itemize]{noitemsep, topsep=0pt, leftmargin=1.2em, partopsep=0pt, parsep=0pt}
 \\titlespacing*{\\section}{0pt}{5pt}{3pt}
+\\setlength{\\parindent}{0pt}
 
 \\begin{document}
 
@@ -79,23 +80,24 @@ ${sortedCert.length > 0 ? `
 \\vspace{2pt}
 ${sortedCert.map(cert => `
 \\textbf{${escapeLatex(cert.institution)}} \\hfill ${escapeLatex(cert.period)} \\\\
-\\textit{${escapeLatex(cert.degree)}} \\hfill ${escapeLatex(cert.location || '')} \\vspace{2pt} \\\\
-`).join('')}` : ''}
+\\textit{${escapeLatex(cert.degree)}} \\hfill ${escapeLatex(cert.location || '')}
+\\vspace{4pt}`).join('\n')}` : ''}
 
 ${sortedAch.length > 0 ? `
 \\section*{Achievements}
 \\hrule
 \\vspace{2pt}
 ${sortedAch.map(ach => `
-\\textbf{${escapeLatex(ach.title)}}: ${escapeLatex(ach.description)} \\\\
-`).join('')}` : ''}
+\\textbf{${escapeLatex(ach.title)}}: ${escapeLatex(ach.description)}
+\\vspace{4pt}`).join('\n')}` : ''}
 
 ${sortedSkills.length > 0 ? `
 \\section*{Skills}
 \\hrule
 \\vspace{2pt}
 ${sortedSkills.map(skill => `
-\\textbf{${escapeLatex(skill.category.replace(/_/g, ' '))}}: ${escapeLatex(skill.items.join(', '))}`).join(' \\\\ \n')}
+\\textbf{${escapeLatex(skill.category.replace(/_/g, ' '))}}: ${escapeLatex(skill.items.join(', '))}
+\\vspace{4pt}`).join('\n')}
 ` : ''}
 
 \\end{document}`;
