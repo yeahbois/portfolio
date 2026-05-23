@@ -32,7 +32,7 @@ export default function ProjectsDashboard() {
       <div className="max-w-6xl mx-auto">
         <header className="mb-12 border-b border-outline/20 pb-6">
           <h1 className="text-4xl font-bold tracking-tighter mb-2">PUBLIC_PROJECTS</h1>
-          <p className="text-sm opacity-50 uppercase tracking-widest">Legasi Pemenang & Inovasi Teknologi</p>
+          <p className="text-sm opacity-50 uppercase tracking-widest">Publicly Accessible Projects</p>
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
