@@ -230,9 +230,9 @@ INSERT INTO settings (key, value) VALUES ('resume_latex', '\\documentclass[9pt,a
 \\begin{center}
     {\\huge \\textbf{Marcello Lienarta}} \\\\
     \\vspace{1pt}
-    {Multipurpose Developer With 5 years of experience in Web Development, AI, Automation, and Robotics} \\\\
+    {Full-Stack Developer $|$ Automation \\& Artificial Intelligence Systems Builder} \\\\
     \\vspace{2pt}
-    \\small \\href{mailto:marcellolienarta663@gmail.com}{marcellolienarta663@gmail.com} $|$ \\href{https://linkedin.com/in/marcellolienarta}{linkedin.com/in/marcellolienarta} $|$ \\href{https://celloportfolio.vercel.app}{celloportfolio.vercel.app} $|$ Jakarta, Indonesia
+    \\small \\href{mailto:marcellolienarta663@gmail.com}{marcellolienarta663@gmail.com} $|$ \\href{https://linkedin.com/in/marcellolienarta}{linkedin.com/in/marcellolienarta} $|$ \\href{https://github.com/yeahbois}{github.com/yeahbois} $|$ \\href{https://celloportfolio.vercel.app}{celloportfolio.vercel.app} $|$ Jakarta, Indonesia
 \\end{center}
 
 \\section*{Experience}

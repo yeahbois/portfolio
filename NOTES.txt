@@ -1,0 +1,6 @@
+latex files:
+    - supabase_migrations.sql
+    - app/api/resume/route.ts
+    - components/resume/resumepreview.tsx
+    - public/resume.tex
+    - utils/resume-latex.ts

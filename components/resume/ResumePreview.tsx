@@ -41,13 +41,16 @@ export const ResumePreview = React.forwardRef<HTMLDivElement, ResumePreviewProps
             {/* Header */}
             <div style={{ textAlign: 'center', marginBottom: '10pt' }}>
                 <h1 style={{ fontSize: '22pt', fontWeight: 'bold', margin: '0 0 2pt 0', letterSpacing: '-0.02em' }}>Marcello Lienarta</h1>
-                <div style={{ marginBottom: '4pt', fontWeight: '500' }}>Multipurpose Developer With 5 years of experience in Web Development, AI, Automation, and Robotics</div>
+                <div style={{ marginBottom: '4pt', fontWeight: '500' }}>Full-Stack Developer | Automation & Artificial Intelligence Systems Builder</div>
                 <div style={{ display: 'flex', justifyContent: 'center', gap: '10pt', fontSize: '8.5pt', flexWrap: 'wrap' }}>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '3pt' }}>
                         marcellolienarta663@gmail.com
                     </span>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '3pt' }}>
                         <a href="https://linkedin.com/in/marcellolienarta" style={{ color: 'black', textDecoration: 'underline' }}>linkedin.com/in/marcellolienarta</a>
+                    </span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '3pt' }}>
+                        <a href="https://github.com/yeahbois" style={{ color: 'black', textDecoration: 'underline' }}>github.com/yeahbois</a>
                     </span>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '3pt' }}>
                         <a href="https://celloportfolio.vercel.app" style={{ color: 'black', textDecoration: 'underline' }}>celloportfolio.vercel.app</a>
