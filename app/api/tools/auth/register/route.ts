@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
+import { cookies } from 'next/headers';
 import bcrypt from 'bcryptjs';
 
 export async function POST(request: Request) {
   try {
     const { username, password, nickname } = await request.json();
-    const supabase = await createClient();
+    const cookieStore = await cookies();
+    const supabase = createClient(cookieStore);
 
     // Check if user exists
     const { data: existingUser } = await supabase

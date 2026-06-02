@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
+import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
@@ -11,7 +12,8 @@ if (!JWT_SECRET) {
 export async function POST(request: Request) {
   try {
     const { username, password } = await request.json();
-    const supabase = await createClient();
+    const cookieStore = await cookies();
+    const supabase = createClient(cookieStore);
 
     const { data: user, error } = await supabase
       .from('tools_user')
