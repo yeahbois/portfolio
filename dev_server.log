@@ -5,75 +5,14 @@
 ▲ Next.js 16.2.5 (Turbopack)
 - Local:         http://localhost:3000
 - Network:       http://192.168.0.2:3000
-✓ Ready in 572ms
+✓ Ready in 565ms
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
 
-○ Compiling / ...
-Error fetching projects: {
-  message: 'TypeError: fetch failed',
-  details: 'TypeError: fetch failed\n' +
-    '\n' +
-    'Caused by: Error: getaddrinfo ENOTFOUND placeholder.supabase.co (ENOTFOUND)\n' +
-    'Error: getaddrinfo ENOTFOUND placeholder.supabase.co\n' +
-    '    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:122:26)\n' +
-    '    at GetAddrInfoReqWrap.callbackTrampoline (node:internal/async_hooks:130:17)',
-  hint: '',
-  code: ''
-}
-Error fetching experience: {
-  message: 'TypeError: fetch failed',
-  details: 'TypeError: fetch failed\n' +
-    '\n' +
-    'Caused by: Error: getaddrinfo ENOTFOUND placeholder.supabase.co (ENOTFOUND)\n' +
-    'Error: getaddrinfo ENOTFOUND placeholder.supabase.co\n' +
-    '    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:122:26)\n' +
-    '    at GetAddrInfoReqWrap.callbackTrampoline (node:internal/async_hooks:130:17)',
-  hint: '',
-  code: ''
-}
-Error fetching skills: {
-  message: 'TypeError: fetch failed',
-  details: 'TypeError: fetch failed\n' +
-    '\n' +
-    'Caused by: Error: getaddrinfo ENOTFOUND placeholder.supabase.co (ENOTFOUND)\n' +
-    'Error: getaddrinfo ENOTFOUND placeholder.supabase.co\n' +
-    '    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:122:26)\n' +
-    '    at GetAddrInfoReqWrap.callbackTrampoline (node:internal/async_hooks:130:17)',
-  hint: '',
-  code: ''
-}
- GET / 200 in 14.1s (next.js: 6.1s, application-code: 8.0s)
-Error fetching projects: {
-  message: 'TypeError: fetch failed',
-  details: 'TypeError: fetch failed\n' +
-    '\n' +
-    'Caused by: Error: getaddrinfo ENOTFOUND placeholder.supabase.co (ENOTFOUND)\n' +
-    'Error: getaddrinfo ENOTFOUND placeholder.supabase.co\n' +
-    '    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:122:26)\n' +
-    '    at GetAddrInfoReqWrap.callbackTrampoline (node:internal/async_hooks:130:17)',
-  hint: '',
-  code: ''
-}
-Error fetching experience: {
-  message: 'TypeError: fetch failed',
-  details: 'TypeError: fetch failed\n' +
-    '\n' +
-    'Caused by: Error: getaddrinfo ENOTFOUND placeholder.supabase.co (ENOTFOUND)\n' +
-    'Error: getaddrinfo ENOTFOUND placeholder.supabase.co\n' +
-    '    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:122:26)\n' +
-    '    at GetAddrInfoReqWrap.callbackTrampoline (node:internal/async_hooks:130:17)',
-  hint: '',
-  code: ''
-}
-Error fetching skills: {
-  message: 'TypeError: fetch failed',
-  details: 'TypeError: fetch failed\n' +
-    '\n' +
-    'Caused by: Error: getaddrinfo ENOTFOUND placeholder.supabase.co (ENOTFOUND)\n' +
-    'Error: getaddrinfo ENOTFOUND placeholder.supabase.co\n' +
-    '    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:122:26)\n' +
-    '    at GetAddrInfoReqWrap.callbackTrampoline (node:internal/async_hooks:130:17)',
-  hint: '',
-  code: ''
-}
- GET / 200 in 7.3s (next.js: 6ms, application-code: 7.3s)
- GET /shortener/create 200 in 833ms (next.js: 689ms, application-code: 144ms)
+
+○ Compiling /tools/delf-dalf ...
+ GET /tools/delf-dalf 200 in 6.4s (next.js: 5.9s, application-code: 485ms)
+ GET /tools/hsk-csca 200 in 810ms (next.js: 720ms, application-code: 90ms)
+ GET /tools/auth/login 200 in 760ms (next.js: 657ms, application-code: 103ms)
