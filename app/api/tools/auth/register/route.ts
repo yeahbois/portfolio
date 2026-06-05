@@ -31,10 +31,7 @@ export async function POST(request: Request) {
           username,
           password_hash: hashedPassword,
           nickname,
-          delf_dalf_progress: {},
-          hsk_csca_progress: {},
-          ioai_progress: {},
-          ielts_sat_progress: {}
+          delf_dalf_progress: {}
         }
       ])
       .select()

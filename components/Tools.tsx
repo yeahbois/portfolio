@@ -29,34 +29,6 @@ export default function Tools() {
       description: 'Comprehensive resources and tracking for French language proficiency exams.',
       href: '/tools/delf-dalf',
       tag: 'EDUCATION'
-    },
-    {
-      id: 'hskcsca',
-      name: 'HSK_CSCA_STUDY_TOOL',
-      description: 'Specialized preparation module for Chinese proficiency and CSCA assessments.',
-      href: '/tools/hsk-csca',
-      tag: 'EDUCATION'
-    },
-    {
-      id: 'ieltssat',
-      name: 'IELTS_SAT_BOOSTER_v2.0',
-      description: 'High-frequency lexical analyzer and practice engine for standardized English tests.',
-      href: '/tools/ielts-sat',
-      tag: 'EDUCATION'
-    },
-    {
-      id: 'ioai',
-      name: 'IOAI_PREP_SOLUTIONS',
-      description: 'Advanced heuristic modeling and historical problem sets for AI Olympiads.',
-      href: '/tools/ioai',
-      tag: 'AI_MODELS'
-    },
-    {
-      id: 'robotics',
-      name: 'ROBOTICS_CONTROLLER_v1.1',
-      description: 'Unified interface for ROS2 node monitoring and kinematic state visualization.',
-      href: '/tools/robotics',
-      tag: 'HARDWARE'
     }
   ]
 

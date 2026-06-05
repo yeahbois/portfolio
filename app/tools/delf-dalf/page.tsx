@@ -1,182 +1,57 @@
 'use client'
 
-import { useState } from 'react'
-import TabSystem from '@/components/tools/TabSystem'
-import Tooltip from '@/components/tools/Tooltip'
+import Link from 'next/link'
 
-// Sample data for B2/C1
-const VOCAB_DATA = {
-  B2: [
-    { word: 'Cependant', definition: 'Nevertheless, however.', pos: 'Adverb', phonetic: 'sə.pɑ̃.dɑ̃' },
-    { word: 'Améliorer', definition: 'To improve or make better.', pos: 'Verb', phonetic: 'a.me.ljo.re' },
-    { word: 'Quotidien', definition: 'Daily or everyday life.', pos: 'Adjective', phonetic: 'ko.ti.djɛ̃' },
-  ],
-  C1: [
-    { word: 'Nonobstant', definition: 'Notwithstanding, despite.', pos: 'Preposition', phonetic: 'nɔ.nɔp.stɑ̃' },
-    { word: 'Épistémologie', definition: 'The theory of knowledge.', pos: 'Noun', phonetic: 'e.pis.te.mɔ.lɔ.ʒi' },
-    { word: 'Paradoxe', definition: 'A self-contradictory statement.', pos: 'Noun', phonetic: 'pa.ʁa.dɔks' },
-  ]
-}
-
-function VocabView() {
-  const [level, setLevel] = useState<'B2' | 'C1'>('B2')
-
+export default function DelfDalfComingSoon() {
   return (
-    <div className="space-y-6">
-      <div className="flex gap-4">
-        <button
-          onClick={() => setLevel('B2')}
-          className={`px-4 py-2 border ${level === 'B2' ? 'border-primary text-primary' : 'border-outline/30 text-foreground/50'}`}
-        >
-          LEVEL_B2
-        </button>
-        <button
-          onClick={() => setLevel('C1')}
-          className={`px-4 py-2 border ${level === 'C1' ? 'border-primary text-primary' : 'border-outline/30 text-foreground/50'}`}
-        >
-          LEVEL_C1
-        </button>
-      </div>
+    <div className="min-h-screen flex items-center justify-center p-8 font-mono bg-background">
+      <div className="max-w-2xl w-full ascii-border p-12 bg-surface/30 relative overflow-hidden group">
+        {/* Decorative background elements */}
+        <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+          <span className="text-8xl font-black">FR_B2_C1</span>
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {VOCAB_DATA[level].map((item, i) => (
-          <div key={i} className="ascii-border p-4 bg-surface/50">
-            <Tooltip
-              word={item.word}
-              definition={item.definition}
-              partOfSpeech={item.pos}
-              phonetic={item.phonetic}
-            >
-              <span className="text-lg font-bold text-primary">{item.word}</span>
-            </Tooltip>
-            <div className="text-xs opacity-50 mt-1">[{item.phonetic}] • {item.pos}</div>
+        <div className="relative z-10 text-center">
+          <div className="inline-block px-3 py-1 bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold tracking-[0.2em] mb-8 animate-pulse">
+            SYSTEM_STATUS: ENCRYPTED
           </div>
-        ))}
-      </div>
 
-      <div className="mt-8 p-6 bg-surface border border-outline/20">
-        <h3 className="text-sm font-bold mb-4 text-primary">CONTEXTUAL_VIEWPORT</h3>
-        <p className="leading-relaxed">
-          Lors de l&apos;examen, il est essentiel d&apos;{' '}
-          <Tooltip word="améliorer" definition="To improve" partOfSpeech="Verb" phonetic="a.me.ljo.re">
-            améliorer
-          </Tooltip>{' '}
-          votre expression écrite. {' '}
-          <Tooltip word="Cependant" definition="However" partOfSpeech="Adverb" phonetic="sə.pɑ̃.dɑ̃">
-            Cependant
-          </Tooltip>
-          , le jury attend une analyse plus profonde, un véritable {' '}
-          <Tooltip word="paradoxe" definition="Paradox" partOfSpeech="Noun" phonetic="pa.ʁa.dɔks">
-            paradoxe
-          </Tooltip>{' '}
-          dans la structure argumentative.
-        </p>
-      </div>
-    </div>
-  )
-}
+          <h1 className="text-4xl md:text-5xl font-black mb-6 tracking-tighter">
+            DELF_DALF.<span className="text-primary">CORE</span>
+          </h1>
 
-function QuizView() {
-  const [step, setStep] = useState(0);
-  const [showAnswer, setShowAnswer] = useState(false);
-  const quizWords = [
-    { word: 'Cependant', answer: 'However' },
-    { word: 'Améliorer', answer: 'To improve' },
-    { word: 'Quotidien', answer: 'Daily' }
-  ];
+          <div className="h-[1px] w-24 bg-primary mx-auto mb-8"></div>
 
-  if (step >= quizWords.length) {
-    return (
-      <div className="ascii-border p-12 text-center bg-surface/30">
-        <div className="text-primary text-xl mb-4 font-bold">SESSION_COMPLETE</div>
-        <p className="opacity-60 mb-8">All nodes processed successfully.</p>
-        <button onClick={() => setStep(0)} className="bg-primary text-on-primary px-8 py-3 hover:opacity-90">
-          RESTART_MODULE
-        </button>
-      </div>
-    );
-  }
+          <p className="text-on-surface/70 leading-relaxed mb-12 max-w-md mx-auto">
+            The linguistic analysis modules for French proficiency (CEFR B2/C1) are currently undergoing recalibration. Access is restricted until the next deployment cycle.
+          </p>
 
-  return (
-    <div className="ascii-border p-12 text-center bg-surface/30 max-w-2xl mx-auto">
-      <div className="text-[10px] opacity-50 mb-4">FLASHCARD_NODE [{step + 1}/{quizWords.length}]</div>
-      <div className="text-4xl font-bold mb-8">{quizWords[step].word}</div>
-
-      {showAnswer ? (
-        <div className="animate-in fade-in zoom-in duration-300">
-          <div className="text-primary text-xl mb-8 border-t border-primary/20 pt-8">
-            {quizWords[step].answer}
+          <div className="grid grid-cols-1 gap-4 mb-12 max-w-xs mx-auto">
+            <div className="flex items-center space-x-3 text-xs opacity-50">
+              <span className="w-2 h-2 bg-primary rounded-full animate-ping"></span>
+              <span>ESTIMATED_RESTORATION: [PENDING]</span>
+            </div>
           </div>
-          <div className="flex gap-4 justify-center">
-            <button
-              onClick={() => { setStep(step + 1); setShowAnswer(false); }}
-              className="px-6 py-2 border border-red-500 text-red-500 hover:bg-red-500/10"
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              href="/"
+              className="px-8 py-3 border border-outline/30 hover:border-primary hover:text-primary transition-all text-xs tracking-widest uppercase"
             >
-              AGAIN (RECALL_FAIL)
-            </button>
-            <button
-              onClick={() => { setStep(step + 1); setShowAnswer(false); }}
-              className="px-6 py-2 border border-green-500 text-green-500 hover:bg-green-500/10"
+              Return_To_Root.exe
+            </Link>
+            <Link
+              href="/dashboard"
+              className="px-8 py-3 bg-primary text-on-primary hover:opacity-90 transition-all text-xs tracking-widest uppercase font-bold"
             >
-              GOOD (RECALL_SUCCESS)
-            </button>
+              Access_Dashboard
+            </Link>
           </div>
         </div>
-      ) : (
-        <button
-          onClick={() => setShowAnswer(true)}
-          className="bg-primary text-on-primary px-8 py-3 hover:opacity-90"
-        >
-          SHOW_DECRYPTION
-        </button>
-      )}
-    </div>
-  )
-}
 
-function AnalyticsView() {
-  return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="ascii-border p-4">
-          <div className="text-[10px] opacity-50">WORDS_MASTERED</div>
-          <div className="text-2xl font-bold text-primary">124 / 850</div>
-        </div>
-        <div className="ascii-border p-4">
-          <div className="text-[10px] opacity-50">QUIZ_ACCURACY</div>
-          <div className="text-2xl font-bold text-primary">88.5%</div>
-        </div>
-        <div className="ascii-border p-4">
-          <div className="text-[10px] opacity-50">STREAK_DAYS</div>
-          <div className="text-2xl font-bold text-primary">12_DAYS</div>
-        </div>
+        {/* Bottom decorative bar */}
+        <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
       </div>
-      <div className="ascii-border p-6 h-48 flex items-end gap-2 px-8">
-        {[40, 70, 45, 90, 65, 80, 50].map((h, i) => (
-          <div key={i} className="flex-1 bg-primary/30 border-t border-primary" style={{ height: `${h}%` }}></div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-export default function DelfDalfTool() {
-  const tabs = [
-    { id: 'vocab', label: 'Vocabularies', component: <VocabView /> },
-    { id: 'quizzes', label: 'Quizzes', component: <QuizView /> },
-    { id: 'analytics', label: 'Analytics', component: <AnalyticsView /> }
-  ]
-
-  return (
-    <div className="min-h-screen p-8 max-w-6xl mx-auto font-mono">
-      <div className="mb-12">
-        <h1 className="text-3xl font-bold text-primary mb-2 flex items-center">
-          <span className="mr-4">/</span> DELF_DALF.STUDY_TOOL
-        </h1>
-        <p className="opacity-50 text-sm">Targeting CEFR B2 & C1 Proficiency Bands</p>
-      </div>
-
-      <TabSystem tabs={tabs} />
     </div>
   )
 }
