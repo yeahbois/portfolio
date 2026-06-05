@@ -13,6 +13,25 @@ export function escapeLatex(str: string) {
     .replace(/\^/g, '\\textasciicircum{}');
 }
 
+function filterAndSortItems(items: any[]) {
+  if (!items) return [];
+  return items
+    .filter(item => {
+      const order = item.order_index;
+      if (order === undefined || order === null) return true;
+      // If it's a string starting with '-', or a negative number, ignore it
+      if (typeof order === 'string') {
+        return !order.trim().startsWith('-');
+      }
+      return order >= 0;
+    })
+    .sort((a, b) => {
+      const orderA = Math.abs(Number(a.order_index) || 0);
+      const orderB = Math.abs(Number(b.order_index) || 0);
+      return orderA - orderB;
+    });
+}
+
 export function generateResumeLatex(data: {
   experience: any[];
   projects: any[];
@@ -22,11 +41,11 @@ export function generateResumeLatex(data: {
 }) {
   const { experience, projects, skills, certificates, achievements } = data;
 
-  const sortedExp = [...(experience || [])].sort((a, b) => (a.order_index || 0) - (b.order_index || 0));
-  const sortedProj = [...(projects || [])].sort((a, b) => (a.order_index || 0) - (b.order_index || 0));
-  const sortedSkills = [...(skills || [])].sort((a, b) => (a.order_index || 0) - (b.order_index || 0));
-  const sortedCert = [...(certificates || [])].sort((a, b) => (a.order_index || 0) - (b.order_index || 0));
-  const sortedAch = [...(achievements || [])].sort((a, b) => (a.order_index || 0) - (b.order_index || 0));
+  const sortedExp = filterAndSortItems(experience);
+  const sortedProj = filterAndSortItems(projects);
+  const sortedSkills = filterAndSortItems(skills);
+  const sortedCert = filterAndSortItems(certificates);
+  const sortedAch = filterAndSortItems(achievements);
 
   return `\\documentclass[9pt,letterpaper]{article}
 \\usepackage[utf8]{inputenc}

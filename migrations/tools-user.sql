@@ -11,9 +11,6 @@ CREATE TABLE IF NOT EXISTS tools_user (
     password_hash TEXT NOT NULL,
     nickname TEXT,
     delf_dalf_progress JSONB DEFAULT '{}'::jsonb,
-    hsk_csca_progress JSONB DEFAULT '{}'::jsonb,
-    ioai_progress JSONB DEFAULT '{}'::jsonb,
-    ielts_sat_progress JSONB DEFAULT '{}'::jsonb,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -24,19 +21,12 @@ CREATE TABLE IF NOT EXISTS tools_user (
 --   ...,
 --   "C1": {"mastered_words": [], "quiz_history": []}
 -- }
--- hsk_csca_progress: {
---   "HSK1": {"mastered_chars": [], "pinyin_scores": {}, "failure_queue": []},
---   ...
--- }
 
 -- Create indexes for performance
 CREATE INDEX IF NOT EXISTS idx_tools_user_username ON tools_user(username);
 
 -- GIN indexes for high-performance JSONB lookups
 CREATE INDEX IF NOT EXISTS idx_tools_user_delf_dalf ON tools_user USING GIN (delf_dalf_progress);
-CREATE INDEX IF NOT EXISTS idx_tools_user_hsk_csca ON tools_user USING GIN (hsk_csca_progress);
-CREATE INDEX IF NOT EXISTS idx_tools_user_ioai ON tools_user USING GIN (ioai_progress);
-CREATE INDEX IF NOT EXISTS idx_tools_user_ielts_sat ON tools_user USING GIN (ielts_sat_progress);
 
 -- Trigger to update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -55,9 +45,13 @@ EXECUTE FUNCTION update_updated_at_column();
 -- Enable Row Level Security
 ALTER TABLE tools_user ENABLE ROW LEVEL SECURITY;
 
--- Policies (Simplified for internal app use, normally would be more granular)
+-- Policies
 CREATE POLICY "Users can view their own data" ON tools_user
     FOR SELECT USING (auth.uid() = id);
 
 CREATE POLICY "Users can update their own data" ON tools_user
     FOR UPDATE USING (auth.uid() = id);
+
+-- Added policy for registration
+CREATE POLICY "Allow public insert for registration" ON tools_user
+    FOR INSERT WITH CHECK (true);
