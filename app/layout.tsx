@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import LayoutContent from "@/components/LayoutContent";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -64,14 +63,9 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans overflow-x-hidden">
         <ThemeProvider>
-          <div className="min-h-screen flex flex-col">
-            <Navbar />
-            <main className="flex-grow pt-16">
-              {children}
-            </main>
-            <Footer />
-          </div>
-          <div className="scanline"></div>
+          <LayoutContent>
+            {children}
+          </LayoutContent>
         </ThemeProvider>
       </body>
     </html>
