@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://celloportfolio.vercel.app/sitemap.xml
+Sitemap: https://cellodev.web.id/sitemap.xml

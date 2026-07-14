@@ -53,7 +53,7 @@ export const ResumePreview = React.forwardRef<HTMLDivElement, ResumePreviewProps
                         <a href="https://github.com/yeahbois" style={{ color: 'black', textDecoration: 'underline' }}>github.com/yeahbois</a>
                     </span>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '3pt' }}>
-                        <a href="https://celloportfolio.vercel.app" style={{ color: 'black', textDecoration: 'underline' }}>celloportfolio.vercel.app</a>
+                        <a href="https://cellodev.web.id" style={{ color: 'black', textDecoration: 'underline' }}>cellodev.web.id</a>
                     </span>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '3pt' }}>
                         Jakarta, Indonesia

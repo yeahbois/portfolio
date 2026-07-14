@@ -36,7 +36,7 @@ export async function GET() {
     \\vspace{1pt}
     {Full-Stack Developer $|$ Automation \\& Artificial Intelligence Systems Builder} \\\\
     \\vspace{2pt}
-    \\small \\href{mailto:marcellolienarta663@gmail.com}{marcellolienarta663@gmail.com} $|$ \\href{https://linkedin.com/in/marcellolienarta}{linkedin.com/in/marcellolienarta} $|$ \\href{https://github.com/yeahbois}{github.com/yeahbois} $|$ \\href{https://celloportfolio.vercel.app}{celloportfolio.vercel.app} $|$ Jakarta, Indonesia
+    \\small \\href{mailto:marcellolienarta663@gmail.com}{marcellolienarta663@gmail.com} $|$ \\href{https://linkedin.com/in/marcellolienarta}{linkedin.com/in/marcellolienarta} $|$ \\href{https://github.com/yeahbois}{github.com/yeahbois} $|$ \\href{https://cellodev.web.id}{cellodev.web.id} $|$ Jakarta, Indonesia
 \\end{center}
 
 \\section*{Experience}

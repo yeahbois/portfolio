@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Marcello Lienarta | Senior Multipurpose Developer",
     description: "Professional portfolio of a senior multipurpose developer with 5 years of experience.",
-    url: "https://celloportfolio.vercel.app/",
+    url: "https://cellodev.web.id/",
     siteName: "Marcello Lienarta Portfolio",
     locale: "en_US",
     type: "website",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://celloportfolio.vercel.app/",
+    canonical: "https://cellodev.web.id/",
   },
 };
 
