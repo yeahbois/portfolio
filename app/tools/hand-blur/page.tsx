@@ -538,10 +538,10 @@ export default function HandBlurTool() {
               <span className="text-[10px] opacity-35 font-mono">SYSTEM_TOOLS //</span>
             </div>
             <h1 className="text-2xl md:text-3xl font-bold tracking-tighter uppercase glitch-effect mt-2">
-              PEACE_BLUR_DETECTOR_v1.0
+              FOTO KITA BLURRR V1.0
             </h1>
             <p className="text-[10px] opacity-50 mt-1 tracking-widest uppercase">
-              Webcam-based gesture tracker. Blurs feed dynamically upon detecting peace gestures.
+              Foto kita blurrr, kita pernah begitu dekat..
             </p>
           </div>
 
@@ -643,7 +643,7 @@ export default function HandBlurTool() {
                   <div className="bg-red-500/90 text-white border border-red-500 px-4 py-2.5 text-center flex items-center justify-center gap-2">
                     <span className="text-[10px] font-black tracking-widest uppercase">
                       ⚠️ ALERT: PEACE_GESTURE_DETECTED - BLURRING_ACTIVE
-                    </span>
+                    </span> 
                   </div>
                 </div>
               )} */}
@@ -673,8 +673,8 @@ export default function HandBlurTool() {
                   <button
                     onClick={() => setBlurMode('entire')}
                     className={`p-2 border text-[9px] font-mono tracking-tighter uppercase transition-colors text-left flex flex-col justify-between h-16 ${blurMode === 'entire'
-                        ? 'border-primary bg-primary/10 text-primary font-bold'
-                        : 'border-outline/20 hover:bg-surface text-on-surface/70'
+                      ? 'border-primary bg-primary/10 text-primary font-bold'
+                      : 'border-outline/20 hover:bg-surface text-on-surface/70'
                       }`}
                   >
                     <span>01. ENTIRE_SCREEN</span>
@@ -684,8 +684,8 @@ export default function HandBlurTool() {
                   <button
                     onClick={() => setBlurMode('hand')}
                     className={`p-2 border text-[9px] font-mono tracking-tighter uppercase transition-colors text-left flex flex-col justify-between h-16 ${blurMode === 'hand'
-                        ? 'border-primary bg-primary/10 text-primary font-bold'
-                        : 'border-outline/20 hover:bg-surface text-on-surface/70'
+                      ? 'border-primary bg-primary/10 text-primary font-bold'
+                      : 'border-outline/20 hover:bg-surface text-on-surface/70'
                       }`}
                   >
                     <span>02. HAND_ONLY</span>
@@ -695,8 +695,8 @@ export default function HandBlurTool() {
                   <button
                     onClick={() => setBlurMode('background')}
                     className={`p-2 border text-[9px] font-mono tracking-tighter uppercase transition-colors text-left flex flex-col justify-between h-16 ${blurMode === 'background'
-                        ? 'border-primary bg-primary/10 text-primary font-bold'
-                        : 'border-outline/20 hover:bg-surface text-on-surface/70'
+                      ? 'border-primary bg-primary/10 text-primary font-bold'
+                      : 'border-outline/20 hover:bg-surface text-on-surface/70'
                       }`}
                   >
                     <span>03. BACKGROUND_ONLY</span>
@@ -706,8 +706,8 @@ export default function HandBlurTool() {
                   <button
                     onClick={() => setBlurMode('none')}
                     className={`p-2 border text-[9px] font-mono tracking-tighter uppercase transition-colors text-left flex flex-col justify-between h-16 ${blurMode === 'none'
-                        ? 'border-primary bg-primary/10 text-primary font-bold'
-                        : 'border-outline/20 hover:bg-surface text-on-surface/70'
+                      ? 'border-primary bg-primary/10 text-primary font-bold'
+                      : 'border-outline/20 hover:bg-surface text-on-surface/70'
                       }`}
                   >
                     <span>04. TRACK_ONLY</span>
