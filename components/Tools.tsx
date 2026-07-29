@@ -3,6 +3,13 @@ import Link from 'next/link'
 export default function Tools() {
   const tools = [
     {
+      id: 'peaceblur',
+      name: 'PEACE_BLUR_DETECTOR_v1.0',
+      description: 'Real-time hand tracking system that dynamically blurs webcam feed when a peace sign gesture is detected.',
+      href: '/tools/hand-blur',
+      tag: 'COMPUTER_VISION'
+    },
+    {
       id: 'drivecdn',
       name: 'DRIVE_TO_CDN_v1.0',
       description: 'Convert Google Drive links into direct CDN access points with preview capabilities.',
