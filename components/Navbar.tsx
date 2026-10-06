@@ -22,7 +22,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
             <Link href="/#projects" className="text-sm font-mono hover:text-primary transition-colors flex items-center">
               <span className="mr-1 text-[10px] text-primary">01.</span> PROJECTS
             </Link>
@@ -37,9 +37,15 @@ export default function Navbar() {
             </Link>
             <Link
               href="/resume"
-              className="px-4 py-1 border border-primary text-primary text-sm font-mono hover:bg-primary hover:text-on-primary transition-all"
+              className="px-3 py-1 border border-outline/30 text-on-surface text-sm font-mono hover:border-primary hover:text-primary transition-all"
             >
               RESUME
+            </Link>
+            <Link
+              href="/#connect"
+              className="px-4 py-1 bg-primary text-on-primary text-sm font-mono hover:bg-transparent hover:text-primary border border-primary font-bold transition-all"
+            >
+              LET&apos;S COLLABORATE
             </Link>
           </div>
 
@@ -78,9 +84,16 @@ export default function Navbar() {
           <Link
             href="/resume"
             onClick={() => setIsOpen(false)}
-            className="text-sm font-mono py-2 text-primary"
+            className="text-sm font-mono py-2 border-b border-outline/10"
           >
             [05] RESUME
+          </Link>
+          <Link
+            href="/#connect"
+            onClick={() => setIsOpen(false)}
+            className="text-sm font-mono py-2 text-primary font-bold"
+          >
+            [06] LET&apos;S COLLABORATE
           </Link>
         </div>
       )}
