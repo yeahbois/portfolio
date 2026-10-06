@@ -31,8 +31,8 @@ export default function ProjectsDashboard() {
     <div className="min-h-screen bg-background text-foreground font-mono p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
         <header className="mb-12 border-b border-outline/20 pb-6">
-          <h1 className="text-4xl font-bold tracking-tighter mb-2">PUBLIC_PROJECTS</h1>
-          <p className="text-sm opacity-50 uppercase tracking-widest">Publicly Accessible Projects</p>
+          <h1 className="text-4xl font-bold tracking-tighter mb-2">PROJECT_SHOWCASE</h1>
+          <p className="text-sm opacity-50 uppercase tracking-widest">Featured Client &amp; Production Projects</p>
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -62,7 +62,7 @@ export default function ProjectsDashboard() {
 
         {projects.length === 0 && (
           <div className="text-center py-20 opacity-30 italic">
-            NO_PUBLIC_PROJECTS_FOUND.EXE
+            NO_PROJECTS_FOUND.EXE
           </div>
         )}
       </div>

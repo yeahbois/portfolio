@@ -558,8 +558,8 @@ export default function Dashboard() {
               {activeTab === 'public_projects' && (
                 <div className="space-y-6">
                   <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl font-bold tracking-tight uppercase">Public_Projects_Manager</h2>
-                    <button onClick={() => setActiveTab('new_public_projects')} className="text-[10px] bg-primary text-on-primary px-4 py-2 hover:opacity-90 tracking-widest uppercase">ADD_NEW_PUBLIC_PROJ</button>
+                    <h2 className="text-xl font-bold tracking-tight uppercase">Project_Showcase_Manager</h2>
+                    <button onClick={() => setActiveTab('new_public_projects')} className="text-[10px] bg-primary text-on-primary px-4 py-2 hover:opacity-90 tracking-widest uppercase">ADD_NEW_SHOWCASE_PROJ</button>
                   </div>
                   <div className="grid gap-4">
                     {publicProjects.map((proj) => (

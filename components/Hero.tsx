@@ -3,19 +3,47 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
+const STATEMENTS = [
+  "I build fast, modern websites for businesses.",
+  "I build booking/order systems for businesses.",
+  "I automate repetitive tasks with websites + AI.",
+  "I build websites with admin dashboards so you can update them yourself.",
+  "I reduce the amount of manual work you have to do.",
+  "I turn manual Google Workplace workflows into automated systems.",
+]
+
 export default function Hero() {
+  const [statementIndex, setStatementIndex] = useState(0)
   const [text, setText] = useState('')
-  const fullText = "I'm a senior multipurpose developer with 5 years of experience building scalable systems and futuristic interfaces."
+  const [isDeleting, setIsDeleting] = useState(false)
 
   useEffect(() => {
-    let i = 0
-    const timer = setInterval(() => {
-      setText(fullText.slice(0, i))
-      i++
-      if (i > fullText.length) clearInterval(timer)
-    }, 50)
-    return () => clearInterval(timer)
-  }, [])
+    const currentFullText = STATEMENTS[statementIndex % STATEMENTS.length]
+
+    let timer: NodeJS.Timeout
+
+    if (!isDeleting && text === currentFullText) {
+      timer = setTimeout(() => setIsDeleting(true), 2000)
+    } else if (isDeleting && text === '') {
+      setIsDeleting(false)
+      setStatementIndex((prev) => (prev + 1) % STATEMENTS.length)
+    } else {
+      const speed = isDeleting ? 30 : 60
+      timer = setTimeout(() => {
+        const nextText = isDeleting
+          ? currentFullText.slice(0, text.length - 1)
+          : currentFullText.slice(0, text.length + 1)
+        setText(nextText)
+      }, speed)
+    }
+
+    return () => clearTimeout(timer)
+  }, [text, isDeleting, statementIndex])
+
+  const longestStatement = STATEMENTS.reduce(
+    (a, b) => (a.length > b.length ? a : b),
+    ''
+  )
 
   return (
     <section className="pt-32 pb-20 px-4 max-w-7xl mx-auto w-full">
@@ -32,7 +60,7 @@ export default function Hero() {
 
         <div className="max-w-2xl grid">
           <p className="text-lg md:text-xl font-mono leading-relaxed text-on-surface [grid-area:1/1] invisible" aria-hidden="true">
-            {fullText}
+            {longestStatement}
             <span className="bg-primary ml-1 w-2 h-6 inline-block align-middle"></span>
           </p>
           <p className="text-lg md:text-xl font-mono leading-relaxed text-on-surface [grid-area:1/1]">
@@ -43,11 +71,18 @@ export default function Hero() {
 
         <div className="flex flex-wrap gap-4 pt-4">
           <Link
+            href="/#connect"
+            className="px-8 py-3 bg-primary text-on-primary font-mono text-sm border border-primary hover:bg-transparent hover:text-primary transition-all flex items-center font-bold"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor" className="mr-2"><path d="M240-400h480v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z"/></svg>
+            Let&apos;s Collaborate
+          </Link>
+          <Link
             href="/projects/dashboard"
-            className="px-8 py-3 bg-primary text-on-primary font-mono text-sm border border-primary hover:bg-transparent hover:text-primary transition-all flex items-center"
+            className="px-8 py-3 border border-outline/30 text-on-surface font-mono text-sm hover:border-primary hover:text-primary transition-all flex items-center"
           >
             <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor" className="mr-2"><path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0-33-23.5-56.5T800-160H160Zm0-80h640v-400H160v400Zm140-40 56-56-103-104 103-104-56-56-160 160 160 160Zm180 0h80l100-320h-80L480-280Zm224 0 160-160-160-160-56 56 103 104-103 104 56 56Z"/></svg>
-            Public Projects
+            Project Showcase
           </Link>
           <Link
             href="/blogs/dashboard"
