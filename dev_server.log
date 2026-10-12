@@ -1,5 +1,12 @@
+$ next dev
+▲ Next.js 16.2.5 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.2:3000
+✓ Ready in 541ms
 
-> portfolio@0.1.0 dev
-> next dev
-
-sh: 1: next: not found
+○ Compiling /showcase ...
+ GET /showcase 200 in 4.6s (next.js: 4.1s, application-code: 491ms)
+ GET /showcase/ledger 200 in 1438ms (next.js: 1213ms, application-code: 225ms)
+ GET /showcase/savor 200 in 1277ms (next.js: 1105ms, application-code: 172ms)
+ GET /showcase/nexus 200 in 990ms (next.js: 849ms, application-code: 141ms)
+ GET /showcase/stayflow 200 in 1094ms (next.js: 938ms, application-code: 157ms)
