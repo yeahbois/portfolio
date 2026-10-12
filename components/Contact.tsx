@@ -8,7 +8,7 @@ export default function Contact() {
         <div className="h-[1px] flex-1 bg-outline/20"></div>
       </div>
 
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12 space-y-4">
           <h3 className="text-3xl md:text-5xl font-extrabold tracking-tight">
             Let&apos;s Build Something Together
