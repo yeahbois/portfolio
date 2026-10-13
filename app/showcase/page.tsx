@@ -6,7 +6,7 @@ const SHOWCASE_PROJECTS = [
   {
     slug: 'savor',
     order: '01',
-    title: 'Savor — Interactive 3D Restaurant Experience',
+    title: 'Savor: Interactive 3D Restaurant Experience',
     subtitle: 'High-end dining web application driven by WebGL & 3D interaction',
     badge: '3D / WEBGL / FRONTEND ART',
     badgeColor: 'border-amber-500/30 text-amber-400 bg-amber-500/10',
@@ -24,7 +24,7 @@ const SHOWCASE_PROJECTS = [
   {
     slug: 'stayflow',
     order: '02',
-    title: 'StayFlow — Hotel Booking & Guest Automation',
+    title: 'StayFlow: Hotel Booking & Guest Automation',
     subtitle: 'End-to-end hospitality platform with visual event workflow automation',
     badge: 'AUTOMATION / WORKFLOWS / FULL-STACK',
     badgeColor: 'border-emerald-500/30 text-emerald-400 bg-emerald-500/10',
@@ -42,11 +42,11 @@ const SHOWCASE_PROJECTS = [
   {
     slug: 'nexus',
     order: '03',
-    title: 'Nexus — AI Business Assistant & Knowledge System',
+    title: 'Nexus: AI Business Assistant & Knowledge System',
     subtitle: 'Production-ready AI integration platform with RAG knowledge base & lead capture',
     badge: 'AI INTEGRATION / RAG / LEAD CRM',
     badgeColor: 'border-cyan-500/30 text-cyan-400 bg-cyan-500/10',
-    description: 'An embeddable intelligent business chatbot that queries customer documentation, automatically captures leads during conversations, and provides complete admin oversight.',
+    description: 'An embeddable business assistant that queries customer documentation, automatically captures leads during conversations, and provides complete admin oversight.',
     features: [
       'Infinity Model Provider abstraction layer (multi-llm ready)',
       'Streaming chat responses & contextual lead capture triggers',
@@ -60,11 +60,11 @@ const SHOWCASE_PROJECTS = [
   {
     slug: 'ledger',
     order: '04',
-    title: 'Ledger — Business Accounting & Analytics Terminal',
+    title: 'Ledger: Business Accounting & Analytics Terminal',
     subtitle: 'Financial terminal for cash flow analysis, invoicing, and transaction auditing',
     badge: 'FINANCIAL TERMINAL / DATA VISUALIZATION',
     badgeColor: 'border-blue-500/30 text-blue-400 bg-blue-500/10',
-    description: 'Dense, precise, SaaS financial terminal designed for small and medium businesses. Features full transaction CRUD, invoice calculation engines, and interactive revenue reports.',
+    description: 'Dense, precise financial terminal designed for small and medium businesses. Features full transaction CRUD, invoice calculation engines, and interactive revenue reports.',
     features: [
       'Real-time P&L, Accounts Receivable, and Cash Flow metrics',
       'Advanced transaction table with filtering, search, sorting, and pagination',
@@ -78,7 +78,7 @@ const SHOWCASE_PROJECTS = [
   {
     slug: 'bistroimharz',
     order: '05',
-    title: 'Bistro im Harz — Lux Velvet Dining & Menu System',
+    title: 'Bistro im Harz: Lux Velvet Dining & Menu System',
     subtitle: 'Neon-noir hospitality showcase with real-time menu pre-ordering',
     badge: 'LUXURY BRANDING / MENU SYSTEM',
     badgeColor: 'border-pink-500/30 text-pink-400 bg-pink-500/10',
@@ -110,12 +110,12 @@ export default function ShowcaseDirectoryPage() {
           Commercial Product Demos
         </h1>
         <p className="text-sm md:text-base text-on-surface-variant max-w-3xl leading-relaxed">
-          I build high-impact digital products, 3D WebGL experiences, intelligent AI business systems, and custom workflow automation engines. Explore interactive live demonstrations below.
+          I build digital products, 3D WebGL experiences, AI business systems, and custom workflow automation engines. Explore interactive live demonstrations below.
         </p>
       </div>
 
       {/* Grid of Showcase Cards */}
-      <div className="grid grid-cols-1 gap-8 mb-20">
+      <div className="grid grid-cols-1 gap-8 mb-12">
         {SHOWCASE_PROJECTS.map((proj) => (
           <div
             key={proj.slug}
@@ -167,16 +167,6 @@ export default function ShowcaseDirectoryPage() {
             </div>
           </div>
         ))}
-      </div>
-
-      {/* Back to Portfolio CTA */}
-      <div className="text-center pt-8 border-t border-outline/20">
-        <Link
-          href="/"
-          className="inline-flex items-center space-x-2 text-xs text-primary hover:underline font-bold tracking-widest uppercase"
-        >
-          <span>&larr; Return To Main Portfolio</span>
-        </Link>
       </div>
     </div>
   )

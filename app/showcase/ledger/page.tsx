@@ -2,6 +2,9 @@
 
 import { useState } from 'react'
 
+// antislop active: during (session override).
+// Design Read: Financial Terminal & Business Analytics Suite, dial ENERGY 2 / RHYTHM 2 / MOTION 1.
+
 // Interfaces
 interface Transaction {
   id: string
@@ -37,7 +40,7 @@ interface Invoice {
 const INITIAL_TRANSACTIONS: Transaction[] = [
   { id: 'TX-9021', date: '2025-02-14', description: 'Enterprise SaaS Annual License', category: 'Software Revenue', entity: 'Acme Corp', type: 'income', amount: 14500, method: 'Wire Transfer', status: 'Completed' },
   { id: 'TX-9022', date: '2025-02-13', description: 'AWS Cloud Infrastructure', category: 'Hosting & Servers', entity: 'Amazon Web Services', type: 'expense', amount: 2340, method: 'Credit Card', status: 'Completed' },
-  { id: 'TX-9023', date: '2025-02-12', description: 'Q1 UI/UX Design Contract', category: 'Consulting Revenue', entity: 'Starlight Tech', type: 'income', amount: 8200, method: 'ACH Transfer', status: 'Completed' },
+  { id: 'TX-9023', date: '2025-02-12', description: 'Q1 Design Contract', category: 'Consulting Revenue', entity: 'Starlight Tech', type: 'income', amount: 8200, method: 'ACH Transfer', status: 'Completed' },
   { id: 'TX-9024', date: '2025-02-11', description: 'Office Space Rental - Feb', category: 'Facilities', entity: 'Skyline Properties', type: 'expense', amount: 3500, method: 'Direct Debit', status: 'Completed' },
   { id: 'TX-9025', date: '2025-02-10', description: 'Cybersecurity Audit Retainer', category: 'Professional Services', entity: 'Sentinel Security', type: 'expense', amount: 1800, method: 'Wire Transfer', status: 'Completed' },
   { id: 'TX-9026', date: '2025-02-08', description: 'API Integration Project', category: 'Software Revenue', entity: 'Nexus Labs', type: 'income', amount: 5600, method: 'Stripe', status: 'Completed' },
@@ -217,6 +220,9 @@ export default function LedgerDashboard() {
             <h1 className="text-xl font-bold tracking-tight text-white flex items-center space-x-2">
               <span>LEDGER</span>
               <span className="text-[10px] bg-[#232A36] text-[#10B981] px-2 py-0.5 rounded border border-[#10B981]/30">FINANCIAL TERMINAL v4.2</span>
+              <span className="text-[10px] bg-[#10B981]/10 text-[#10B981] px-2 py-0.5 rounded border border-[#10B981]/30 font-bold">
+                [NOTE: No AI API yet, No database connection yet]
+              </span>
             </h1>
             <p className="text-[11px] text-[#8A99AD]">Automated Business Accounting & Cash Flow Engine</p>
           </div>
@@ -258,7 +264,7 @@ export default function LedgerDashboard() {
           <div className="bg-[#141A24] border border-[#232A36] p-4 rounded-lg">
             <p className="text-[10px] text-[#8A99AD] uppercase tracking-wider mb-1">TOTAL REVENUE (YTD)</p>
             <p className="text-2xl font-bold text-[#10B981]">${totalIncome.toLocaleString()}</p>
-            <p className="text-[10px] text-[#10B981] mt-1">↑ +14.2% vs previous quarter</p>
+            <p className="text-[10px] text-[#10B981] mt-1">+14.2% vs previous quarter</p>
           </div>
 
           <div className="bg-[#141A24] border border-[#232A36] p-4 rounded-lg">
@@ -646,7 +652,7 @@ export default function LedgerDashboard() {
                 <input
                   required
                   type="text"
-                  placeholder="e.g. Q1 Design Contract Payment"
+                  placeholder="e.g. Design Contract Payment"
                   value={newTx.description}
                   onChange={(e) => setNewTx({ ...newTx, description: e.target.value })}
                   className="w-full bg-[#0A0D14] border border-[#232A36] p-2.5 rounded text-white focus:border-[#10B981] outline-none"

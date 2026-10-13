@@ -2,6 +2,9 @@
 
 import { useState } from 'react'
 
+// antislop active: during (session override).
+// Design Read: Hotel Booking & Automation Dashboard for Hospitality Operations, dial ENERGY 2 / RHYTHM 2 / MOTION 1.
+
 // Room Types
 interface Room {
   id: string
@@ -56,7 +59,7 @@ const INITIAL_ROOMS: Room[] = [
     pricePerNight: 390,
     amenities: ['Private Courtyard Garden', 'Outdoor Rain Shower', 'Heated Plunge Pool', 'Butler Service'],
     image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80',
-    description: 'Surrounded by lush flora, featuring a serene private patio, deep plunge pool, and dedicated 24/7 personal concierge.',
+    description: 'Surrounded by flora, featuring a private patio, deep plunge pool, and dedicated 24/7 personal concierge.',
   },
   {
     id: 'room-103',
@@ -66,7 +69,7 @@ const INITIAL_ROOMS: Room[] = [
     pricePerNight: 650,
     amenities: ['360 Skylight View', 'Private Sauna', 'Personal Chef Kitchen', 'Helipad Access', 'Valet Parking'],
     image: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=800&q=80',
-    description: 'The ultimate luxury experience atop the resort tower, featuring floor-to-ceiling glass, private sauna, and bespoke dining.',
+    description: 'Luxury accommodation atop the resort tower, featuring floor-to-ceiling glass, private sauna, and bespoke dining.',
   },
 ]
 
@@ -80,7 +83,7 @@ const INITIAL_RESERVATIONS: Reservation[] = [
     checkIn: '2025-02-18',
     checkOut: '2025-02-21',
     nights: 3,
-    totalPrice: 924, // includes tax
+    totalPrice: 924,
     status: 'Confirmed',
   },
   {
@@ -118,7 +121,7 @@ export default function StayFlowHotelPage() {
   // Reservations & Workflows State
   const [reservations, setReservations] = useState<Reservation[]>(INITIAL_RESERVATIONS)
   const [workflows, setWorkflows] = useState<WorkflowRule[]>(INITIAL_WORKFLOWS)
-  const [newRule, setNewRule] = useState({ trigger: 'Reservation is Created', action: 'Send Staff Slack Alert', recipient: 'Reception Staff' })
+  const [newRule, setNewRule] = useState({ trigger: 'Reservation is Created', action: 'Send Staff Alert', recipient: 'Reception Staff' })
 
   // Calculate Night Stay
   const calculateNights = () => {
@@ -182,8 +185,11 @@ export default function StayFlowHotelPage() {
         <div className="flex items-center space-x-3">
           <div className="w-3 h-3 bg-[#E2A970] rounded-full animate-pulse"></div>
           <div>
-            <h1 className="text-xl font-bold text-white tracking-widest font-mono">
-              STAYFLOW <span className="text-[10px] bg-white/10 text-[#E2A970] px-2 py-0.5 rounded border border-[#E2A970]/30 font-normal">GUEST AUTOMATION</span>
+            <h1 className="text-xl font-bold text-white tracking-widest font-mono flex items-center space-x-2">
+              <span>STAYFLOW</span>
+              <span className="text-[10px] bg-white/10 text-[#E2A970] px-2 py-0.5 rounded border border-[#E2A970]/30 font-normal">
+                [NOTE: No AI API yet, No database connection yet]
+              </span>
             </h1>
             <p className="text-[11px] text-gray-400 font-mono">Boutique Booking Engine & Triggered Email Workflows</p>
           </div>
@@ -210,15 +216,15 @@ export default function StayFlowHotelPage() {
       {activeTab === 'guest' && (
         <main className="space-y-16 pb-20">
           {/* Luxury Hotel Hero */}
-          <section className="relative min-h-[60vh] flex flex-col justify-center items-center text-center px-6 pt-16 bg-gradient-to-b from-[#161C24] to-[#0C0F12] border-b border-white/5">
+          <section className="relative min-h-[50vh] flex flex-col justify-center items-center text-center px-6 pt-12 bg-gradient-to-b from-[#161C24] to-[#0C0F12] border-b border-white/5">
             <span className="text-xs font-mono text-[#E2A970] tracking-[0.3em] uppercase font-bold mb-4">
-              BOUTIQUE HOSPITALITY REIMAGINED
+              BOUTIQUE HOSPITALITY PORTAL
             </span>
             <h2 className="text-4xl md:text-7xl font-serif text-white max-w-4xl leading-tight">
               Bespoke Suites & Automated Pre-Arrival Service
             </h2>
             <p className="text-sm md:text-base text-gray-400 max-w-2xl mt-4 font-light leading-relaxed">
-              Experience flawless luxury. Our intelligent guest platform calculates pricing dynamically and triggers automated pre-arrival preferences before you even set foot on property.
+              Our hospitality platform calculates pricing dynamically and triggers pre-arrival preference workflows before check-in.
             </p>
 
             {/* Availability Search Bar */}
@@ -542,7 +548,7 @@ export default function StayFlowHotelPage() {
             </div>
 
             <p className="text-gray-400 text-[11px] leading-relaxed">
-              Automated trigger WF-1 executed: Confirmation email and invoice PDF sent to <span className="text-white">{confirmedBookingRef.guestEmail}</span>.
+              Automated trigger WF-1 executed: Confirmation email and invoice PDF simulated for <span className="text-white">{confirmedBookingRef.guestEmail}</span>. [NOTE: No AI API yet, No database connection yet]
             </p>
 
             <button onClick={() => setConfirmedBookingRef(null)} className="w-full py-3 bg-[#E2A970] text-[#0C0F12] font-bold rounded-xl uppercase">

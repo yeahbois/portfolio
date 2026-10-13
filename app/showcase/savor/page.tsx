@@ -2,6 +2,9 @@
 
 import { useState, useEffect, useRef } from 'react'
 
+// antislop active: during (session override).
+// Design Read: Luxury WebGL Dining Showcase for High-End Clientele, dial ENERGY 2 / RHYTHM 2 / MOTION 2.
+
 // Signature Dishes Data
 const SIGNATURE_DISHES = [
   {
@@ -59,6 +62,7 @@ export default function SavorRestaurantPage() {
   const [rotationAngle, setRotationAngle] = useState(0)
   const [isReserveModalOpen, setIsReserveModalOpen] = useState(false)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+  const [reservationNotice, setReservationNotice] = useState('')
 
   // Interactive 3D Canvas mouse reactivity
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
@@ -139,21 +143,25 @@ export default function SavorRestaurantPage() {
   return (
     <div className="min-h-screen bg-[#08080A] text-[#E5E5E7] font-serif selection:bg-[#D4AF37] selection:text-[#08080A]">
       {/* Editorial Header Nav */}
-      <nav className="fixed top-0 w-full z-50 bg-[#08080A]/80 backdrop-blur-md border-b border-white/10 px-8 py-5 flex justify-between items-center">
-        <div className="text-2xl font-extrabold tracking-widest text-[#D4AF37] font-mono">
-          SAVOR <span className="text-xs font-serif italic text-white/60 font-normal">/ Culinary Art</span>
+      <nav className="fixed top-0 w-full z-50 bg-[#08080A]/80 backdrop-blur-md border-b border-white/10 px-8 py-4 flex flex-wrap justify-between items-center gap-4">
+        <div className="flex items-center space-x-4">
+          <div className="text-2xl font-extrabold tracking-widest text-[#D4AF37] font-mono">
+            SAVOR <span className="text-xs font-serif italic text-white/60 font-normal">/ Culinary Art</span>
+          </div>
+          <span className="hidden sm:inline-block text-[10px] bg-[#D4AF37]/10 text-[#D4AF37] border border-[#D4AF37]/30 px-2.5 py-1 rounded font-mono font-bold uppercase tracking-wider">
+            [NOTE: No AI API yet, No database connection yet]
+          </span>
         </div>
 
-        <div className="hidden md:flex items-center space-x-10 text-xs font-sans tracking-widest uppercase text-white/80">
+        <div className="hidden md:flex items-center space-x-8 text-xs font-sans tracking-widest uppercase text-white/80">
           <a href="#hero" className="hover:text-[#D4AF37] transition-colors">Experience</a>
           <a href="#dishes" className="hover:text-[#D4AF37] transition-colors">3D Menu</a>
           <a href="#story" className="hover:text-[#D4AF37] transition-colors">Story</a>
-          <a href="#chef" className="hover:text-[#D4AF37] transition-colors">Chef Profile</a>
         </div>
 
         <button
           onClick={() => setIsReserveModalOpen(true)}
-          className="border border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#08080A] px-6 py-2.5 rounded-full text-xs font-sans font-bold tracking-widest transition-all duration-300 uppercase"
+          className="border border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#08080A] px-6 py-2 rounded-full text-xs font-sans font-bold tracking-widest transition-all duration-300 uppercase"
         >
           Reserve Table
         </button>
@@ -326,29 +334,50 @@ export default function SavorRestaurantPage() {
               <h3 className="text-2xl font-serif text-white mt-1">Reserve Your Experience</h3>
             </div>
 
-            <form onSubmit={(e) => { e.preventDefault(); alert('Table reservation request received!'); setIsReserveModalOpen(false) }} className="space-y-4 text-xs">
-              <div>
-                <label className="text-white/60 uppercase block mb-1">Full Name</label>
-                <input required type="text" placeholder="Marcello Lienarta" className="w-full bg-white/5 border border-white/10 p-3 rounded-xl text-white outline-none focus:border-[#D4AF37]" />
+            {reservationNotice ? (
+              <div className="bg-[#D4AF37]/10 border border-[#D4AF37]/30 p-4 rounded-xl text-center space-y-3">
+                <p className="text-xs text-[#D4AF37] font-bold">{reservationNotice}</p>
+                <button
+                  onClick={() => {
+                    setReservationNotice('')
+                    setIsReserveModalOpen(false)
+                  }}
+                  className="px-6 py-2 bg-[#D4AF37] text-[#08080A] text-xs font-bold rounded-lg uppercase"
+                >
+                  Close
+                </button>
               </div>
-              <div className="grid grid-cols-2 gap-3">
+            ) : (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  setReservationNotice('Reservation recorded in demo session state. [NOTE: No AI API yet, No database connection yet]')
+                }}
+                className="space-y-4 text-xs"
+              >
                 <div>
-                  <label className="text-white/60 uppercase block mb-1">Guests</label>
-                  <select className="w-full bg-[#121216] border border-white/10 p-3 rounded-xl text-white outline-none focus:border-[#D4AF37]">
-                    <option>2 Guests</option>
-                    <option>4 Guests</option>
-                    <option>6 Guests</option>
-                  </select>
+                  <label className="text-white/60 uppercase block mb-1">Full Name</label>
+                  <input required type="text" placeholder="Marcello Lienarta" className="w-full bg-white/5 border border-white/10 p-3 rounded-xl text-white outline-none focus:border-[#D4AF37]" />
                 </div>
-                <div>
-                  <label className="text-white/60 uppercase block mb-1">Date</label>
-                  <input required type="date" className="w-full bg-white/5 border border-white/10 p-3 rounded-xl text-white outline-none focus:border-[#D4AF37]" />
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-white/60 uppercase block mb-1">Guests</label>
+                    <select className="w-full bg-[#121216] border border-white/10 p-3 rounded-xl text-white outline-none focus:border-[#D4AF37]">
+                      <option>2 Guests</option>
+                      <option>4 Guests</option>
+                      <option>6 Guests</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-white/60 uppercase block mb-1">Date</label>
+                    <input required type="date" className="w-full bg-white/5 border border-white/10 p-3 rounded-xl text-white outline-none focus:border-[#D4AF37]" />
+                  </div>
                 </div>
-              </div>
-              <button type="submit" className="w-full py-4 bg-[#D4AF37] text-[#08080A] font-bold rounded-xl uppercase tracking-widest hover:bg-white transition-all">
-                CONFIRM RESERVATION
-              </button>
-            </form>
+                <button type="submit" className="w-full py-4 bg-[#D4AF37] text-[#08080A] font-bold rounded-xl uppercase tracking-widest hover:bg-white transition-all">
+                  CONFIRM RESERVATION
+                </button>
+              </form>
+            )}
           </div>
         </div>
       )}
