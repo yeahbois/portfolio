@@ -195,7 +195,7 @@ export default function BistroImHarzPage() {
               href="#menu"
               className="bg-[#FF2A5F] text-white px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all shadow-[0_0_20px_rgba(255,42,95,0.3)]"
             >
-              Explore Menu
+              View Signature Menu
             </a>
             <button
               onClick={() => setIsReservationOpen(true)}

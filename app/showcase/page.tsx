@@ -18,7 +18,7 @@ const SHOWCASE_PROJECTS = [
       '60 FPS performance optimizations for mobile & desktop',
     ],
     tech: ['Next.js', 'React Three Fiber', 'Three.js', 'Tailwind CSS', 'TypeScript'],
-    cta: 'EXPLORE_SAVOR.3D',
+    cta: 'INSPECT_SAVOR.3D',
     styleBorder: 'hover:border-amber-500/50',
   },
   {
@@ -110,7 +110,7 @@ export default function ShowcaseDirectoryPage() {
           Commercial Product Demos
         </h1>
         <p className="text-sm md:text-base text-on-surface-variant max-w-3xl leading-relaxed">
-          I build digital products, 3D WebGL experiences, AI business systems, and custom workflow automation engines. Explore interactive live demonstrations below.
+          I build digital products, 3D WebGL experiences, AI business systems, and custom workflow automation engines. Launch and inspect live interactive demonstrations below.
         </p>
       </div>
 
