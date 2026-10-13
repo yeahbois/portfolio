@@ -27,7 +27,7 @@ export default function Contact() {
               </svg>
             </div>
             <p className="font-mono text-[10px] text-primary uppercase tracking-widest font-bold mb-1">GitHub</p>
-            <p className="font-mono text-xs text-on-surface-variant break-all mb-6">yeahbois</p>
+            <p className="font-mono text-xs text-on-surface-variant break-all mb-6">github.com/yeahbois</p>
             <a
               href="https://github.com/yeahbois"
               target="_blank"
