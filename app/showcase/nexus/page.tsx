@@ -2,6 +2,9 @@
 
 import { useState, useRef, useEffect } from 'react'
 
+// antislop active: during (session override).
+// Design Read: AI Assistant and Lead CRM for Business Technical Operations, dial ENERGY 2 / RHYTHM 2 / MOTION 1.
+
 // Interfaces
 interface Message {
   id: string
@@ -43,14 +46,14 @@ const INITIAL_LEADS: Lead[] = [
 
 export default function NexusAIAssistantPage() {
   const [activeTab, setActiveTab] = useState<'chat' | 'admin'>('chat')
-  const [adminSection, setAdminSection] = useState<'leads' | 'knowledge' | 'analytics' | 'settings'>('leads')
+  const [adminSection, setAdminSection] = useState<'leads' | 'knowledge' | 'settings'>('leads')
 
   // Chat State
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'm-1',
       sender: 'assistant',
-      text: 'Hello! I am Nexus, your intelligent business assistant. How can I help you regarding our web engineering services, pricing, or product integration today?',
+      text: 'Hello! I am Nexus, your business assistant. How can I help you regarding our web engineering services, pricing, or product integration today? [NOTE: No AI API yet, No database connection yet]',
       timestamp: '10:00 AM',
       actions: [
         { label: 'Explore Service Pricing', action: 'What are your service pricing packages?' },
@@ -103,20 +106,20 @@ export default function NexusAIAssistantPage() {
 
     // Simulate Streaming Infinity AI Model + RAG response
     setTimeout(() => {
-      let botResponse = 'I searched our knowledge base for your inquiry. '
+      let botResponse = 'I searched our local knowledge base for your inquiry. [NOTE: No AI API yet, No database connection yet] '
       let actions: Array<{ label: string; action: string }> | undefined = undefined
 
       const lower = query.toLowerCase()
       if (lower.includes('price') || lower.includes('pricing') || lower.includes('cost')) {
-        botResponse = 'Our custom development packages range from $3,000 for boutique web applications to $15,000+ for enterprise platforms with automated workflows. Would you like us to prepare a tailored quote for your business?'
-        actions = [{ label: 'Get Tailored Quote', action: 'I want a custom quote' }]
+        botResponse = 'Our custom development packages range from $3,000 for boutique web applications to $15,000+ for enterprise platforms with automated workflows. Would you like us to prepare a quote for your business? [NOTE: No AI API yet, No database connection yet]'
+        actions = [{ label: 'Get Quote', action: 'I want a custom quote' }]
       } else if (lower.includes('build') || lower.includes('software') || lower.includes('capabilities')) {
-        botResponse = 'We specialize in building 4 core product categories: 1. Financial Accounting Terminals (Ledger), 2. Interactive 3D WebGL Experiences (Savor), 3. AI Business Assistants (Nexus), and 4. Hotel Booking & Automation Platforms (StayFlow).'
+        botResponse = 'We specialize in building 4 product categories: 1. Financial Accounting Terminals (Ledger), 2. Interactive 3D WebGL Experiences (Savor), 3. AI Business Assistants (Nexus), and 4. Hotel Booking & Automation Platforms (StayFlow). [NOTE: No AI API yet, No database connection yet]'
       } else if (lower.includes('speak') || lower.includes('quote') || lower.includes('consultation')) {
-        botResponse = 'Great! Please share your contact details below so our lead engineering team can reach out to you directly.'
+        botResponse = 'Please share your contact details below so our lead engineering team can reach out to you directly.'
         setShowLeadForm(true)
       } else {
-        botResponse = `Thanks for reaching out regarding "${query}". Nexus AI utilizes Infinity model RAG retrieval to scan customer documentation in real time and answer technical questions with precision.`
+        botResponse = `Thanks for reaching out regarding "${query}". Nexus AI utilizes knowledge base retrieval to scan customer documentation in real time and answer technical questions. [NOTE: No AI API yet, No database connection yet]`
       }
 
       const botMsg: Message = {
@@ -129,7 +132,7 @@ export default function NexusAIAssistantPage() {
 
       setMessages((prev) => [...prev, botMsg])
       setIsTyping(false)
-    }, 1000)
+    }, 800)
   }
 
   // Handle Lead Form Submission
@@ -155,7 +158,7 @@ export default function NexusAIAssistantPage() {
       {
         id: `sys-${Date.now()}`,
         sender: 'assistant',
-        text: `Thank you, ${newLeadRecord.name}! Your consultation request has been recorded in our Nexus CRM. We will reach out via ${newLeadRecord.email} shortly.`,
+        text: `Thank you, ${newLeadRecord.name}! Your consultation request has been recorded in local demo state. [NOTE: No AI API yet, No database connection yet] We will reach out via ${newLeadRecord.email} shortly.`,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       },
     ])
@@ -190,8 +193,11 @@ export default function NexusAIAssistantPage() {
               <span className="text-[10px] bg-[#21262D] text-[#00D2FF] px-2 py-0.5 rounded border border-[#00D2FF]/30">
                 AI BUSINESS ASSISTANT v3.0
               </span>
+              <span className="text-[10px] bg-[#00D2FF]/10 text-[#00D2FF] px-2 py-0.5 rounded border border-[#00D2FF]/30 font-bold">
+                [NOTE: No AI API yet, No database connection yet]
+              </span>
             </h1>
-            <p className="text-[11px] text-[#8B949E]">Infinity AI Provider & RAG Vector Knowledge Storage</p>
+            <p className="text-[11px] text-[#8B949E]">Knowledge RAG & Lead CRM Dashboard</p>
           </div>
         </div>
 
@@ -224,11 +230,14 @@ export default function NexusAIAssistantPage() {
                   EMBEDDABLE BUSINESS AI
                 </span>
                 <h2 className="text-2xl font-bold text-white leading-tight">
-                  "Your website should answer before your team does."
+                  Automated Customer Assistance & Lead Qualification
                 </h2>
                 <p className="text-xs text-[#8B949E] leading-relaxed">
-                  Nexus embeds seamlessly into client websites, querying your product knowledge base, capturing leads directly into your database, and automating customer onboarding.
+                  Nexus embeds into client websites, querying product documentation, capturing leads directly, and providing automated customer responses.
                 </p>
+                <div className="bg-[#0D1117] border border-[#00D2FF]/30 p-3 rounded text-[11px] text-[#00D2FF]">
+                  Notice: System running in front-end preview mode. [NOTE: No AI API yet, No database connection yet]
+                </div>
               </div>
 
               {/* Live Assistant Stats */}
@@ -297,7 +306,7 @@ export default function NexusAIAssistantPage() {
                 {isTyping && (
                   <div className="flex items-center space-x-2 text-xs text-[#8B949E]">
                     <span className="w-2 h-2 bg-[#00D2FF] rounded-full animate-bounce"></span>
-                    <span>Nexus AI is querying Infinity model knowledge base...</span>
+                    <span>Nexus AI is processing response... [NOTE: No AI API yet, No database connection yet]</span>
                   </div>
                 )}
 
@@ -451,7 +460,7 @@ export default function NexusAIAssistantPage() {
                     className="w-full bg-[#0D1117] border border-[#21262D] p-3 text-xs text-white rounded outline-none focus:border-[#00D2FF]"
                   />
                   <button type="submit" className="px-6 py-2.5 bg-[#00D2FF] text-[#090C10] text-xs font-bold rounded uppercase">
-                    INDEX TO RAG STORAGE
+                    INDEX TO LOCAL RAG STORAGE
                   </button>
                 </form>
 
