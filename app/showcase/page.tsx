@@ -75,24 +75,6 @@ const SHOWCASE_PROJECTS = [
     cta: 'OPEN_LEDGER.FIN',
     styleBorder: 'hover:border-blue-500/50',
   },
-  {
-    slug: 'bistroimharz',
-    order: '05',
-    title: 'Bistro im Harz: Lux Velvet Dining & Menu System',
-    subtitle: 'Neon-noir hospitality showcase with real-time menu pre-ordering',
-    badge: 'LUXURY BRANDING / MENU SYSTEM',
-    badgeColor: 'border-pink-500/30 text-pink-400 bg-pink-500/10',
-    description: 'A dark-mode velvet dining showcase with animated menu category filters, quick table reservation modal, and interactive pre-order receipt sidebar.',
-    features: [
-      'Lux Velvet aesthetic with high-contrast neon accents',
-      'Tabbed menu system with instant dish filtering',
-      'Pre-order receipt cart drawer with subtotal calculations',
-      'Table reservation modal with instant reference code',
-    ],
-    tech: ['Next.js', 'Tailwind CSS', 'TypeScript', 'Google Fonts Outfit'],
-    cta: 'VIEW_BISTRO.LUX',
-    styleBorder: 'hover:border-pink-500/50',
-  },
 ]
 
 export default function ShowcaseDirectoryPage() {

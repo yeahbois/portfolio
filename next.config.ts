@@ -28,6 +28,11 @@ const nextConfig: NextConfig = {
         destination: '/showcase/ledger',
         permanent: true,
       },
+      {
+        source: '/showcase/bistroimharz',
+        destination: '/showcase/savor',
+        permanent: true,
+      },
     ];
   },
   async headers() {
