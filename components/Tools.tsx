@@ -36,6 +36,13 @@ export default function Tools() {
       description: 'Comprehensive resources and tracking for French language proficiency exams.',
       href: '/tools/delf-dalf',
       tag: 'EDUCATION'
+    },
+    {
+      id: 'tesiq',
+      name: 'TES_IQ_SIMULATOR_v1.0',
+      description: 'Platform evaluasi dan latihan psikotes terpadu (8 subtes psikometri: analisis-sintesa, numerikal, verbal, abstraksi spasial, dan memori).',
+      href: '/tools/tesiq',
+      tag: 'PSYCHOMETRICS'
     }
   ]
 
